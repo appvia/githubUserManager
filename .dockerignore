@@ -1,0 +1,12 @@
+node_modules
+tests
+coverage
+.github
+.git
+Dockerfile
+.nvmrc
+jest.config.js
+*.pem
+credentials.json
+.dockerignore
+.gitignore
