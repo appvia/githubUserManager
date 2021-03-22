@@ -6,7 +6,7 @@ module.exports = {
   },
   extends: [
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
-    "plugin:prettier/recommended"
+    'plugin:prettier/recommended',
   ],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs

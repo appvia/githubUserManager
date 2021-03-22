@@ -1,8 +1,6 @@
 const { google } = require('googleapis')
 
-const privatekey = JSON.parse(
-  Buffer.from(process.env.GOOGLE_CREDENTIALS, 'base64').toString('utf-8')
-)
+const privatekey = JSON.parse(Buffer.from(process.env.GOOGLE_CREDENTIALS, 'base64').toString('utf-8'))
 
 export const googleAuth = async () => {
   const jwtClient = new google.auth.JWT(
@@ -10,20 +8,20 @@ export const googleAuth = async () => {
     null,
     privatekey.private_key,
     ['https://www.googleapis.com/auth/admin.directory.user.readonly'],
-    process.env.GOOGLE_EMAIL_ADDRESS
+    process.env.GOOGLE_EMAIL_ADDRESS,
   )
   await jwtClient.authorize()
   return jwtClient
 }
 
-export async function getAdminService () {
+export async function getAdminService() {
   return google.admin({
     version: 'directory_v1',
-    auth: await googleAuth()
+    auth: await googleAuth(),
   })
 }
 
-export async function getGithubUsersFromGoogle () {
+export async function getGithubUsersFromGoogle() {
   const service = await getAdminService()
 
   const userList: {
@@ -33,7 +31,7 @@ export async function getGithubUsersFromGoogle () {
     maxResults: 250,
     projection: 'custom',
     fields: 'users(customSchemas/Accounts/github(value))',
-    customFieldMask: 'Accounts'
+    customFieldMask: 'Accounts',
   })
 
   const githubAccounts = formatUserList(userList.data.users)
@@ -44,15 +42,11 @@ interface userResponseEntry {
   customSchemas: { Accounts: { github: Array<{ value: string }> } }
 }
 
-export function formatUserList (users: Array<userResponseEntry>): Set<string> {
+export function formatUserList(users: Array<userResponseEntry>): Set<string> {
   return new Set(
     users
-      .map(user =>
-        user?.customSchemas?.Accounts?.github.map(account =>
-          account.value.toLowerCase()
-        )
-      )
+      .map((user) => user?.customSchemas?.Accounts?.github.map((account) => account.value.toLowerCase()))
       .flat()
-      .filter(Boolean)
+      .filter(Boolean),
   )
 }
