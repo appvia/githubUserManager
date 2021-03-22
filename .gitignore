@@ -1,0 +1,5 @@
+credentials.json
+node_modules
+.env
+coverage
+*.pem
