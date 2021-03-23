@@ -1,8 +1,9 @@
-const { google } = require('googleapis')
+import { google } from 'googleapis'
 
 const privatekey = JSON.parse(Buffer.from(process.env.GOOGLE_CREDENTIALS, 'base64').toString('utf-8'))
 
-export const googleAuth = async () => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export async function googleAuth() {
   const jwtClient = new google.auth.JWT(
     privatekey.client_email,
     null,
@@ -14,6 +15,7 @@ export const googleAuth = async () => {
   return jwtClient
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function getAdminService() {
   return google.admin({
     version: 'directory_v1',
@@ -21,7 +23,7 @@ export async function getAdminService() {
   })
 }
 
-export async function getGithubUsersFromGoogle() {
+export async function getGithubUsersFromGoogle(): Set<string> {
   const service = await getAdminService()
 
   const userList: {

@@ -1,7 +1,7 @@
 import { getGithubUsersFromGoogle } from './src/google'
 import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersToGitHubOrg } from './src/github'
 
-export async function run() {
+export async function run(): Promise<void> {
   const googleUsers = await getGithubUsersFromGoogle()
   console.log(`Users from google: ${Array.from(googleUsers).join(', ')}`)
 

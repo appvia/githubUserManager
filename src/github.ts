@@ -4,6 +4,7 @@ const ignoredUsers = process.env.IGNORED_USERS.toLowerCase().split(',')
 
 const octokit = getAuthenticatedOctokit()
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function getAuthenticatedOctokit() {
   return new Octokit({
     authStrategy: createAppAuth,
@@ -15,7 +16,7 @@ export function getAuthenticatedOctokit() {
   })
 }
 
-export async function getGithubUsersFromGithub() {
+export async function getGithubUsersFromGithub(): Set<string> {
   const members = await octokit.paginate(octokit.orgs.listMembers, {
     org: process.env.GITHUB_ORG,
   })
@@ -33,11 +34,12 @@ export async function getGithubUsersFromGithub() {
   return new Set([...githubAccounts, ...pendingGithubAccounts])
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function formatUserList(users): Set<string> {
   return new Set(users.map((user) => user.login.toLowerCase()))
 }
 
-export async function getUserIdFromUsername(username: string) {
+export async function getUserIdFromUsername(username: string): Promise<number> {
   console.log(`Looking up user ${username}`)
   let user
   try {
@@ -49,13 +51,13 @@ export async function getUserIdFromUsername(username: string) {
   return user.data.id
 }
 
-export async function addUsersToGitHubOrg(users: Set<string>) {
+export async function addUsersToGitHubOrg(users: Set<string>): Promise<void> {
   for (const user of users) {
     await addUserToGitHubOrg(user)
   }
 }
 
-export async function addUserToGitHubOrg(user: string) {
+export async function addUserToGitHubOrg(user: string): Promise<void> {
   if (ignoredUsers.includes(user.toLowerCase())) {
     console.log(`Ignoring add for ${user}`)
     return false
@@ -69,12 +71,13 @@ export async function addUserToGitHubOrg(user: string) {
   console.log(`Invitation sent to ${user} (${userId} to ${process.env.GITHUB_ORG})`)
 }
 
-export async function removeUsersToGitHubOrg(users: Set<string>) {
+export async function removeUsersToGitHubOrg(users: Set<string>): Promise<void> {
   for (const user of users) {
     await removeUserToGitHubOrg(user)
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function removeUserToGitHubOrg(user: string) {
   if (ignoredUsers.includes(user.toLowerCase())) {
     console.log(`Ignoring remove for ${user}`)
