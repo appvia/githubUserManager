@@ -26,7 +26,11 @@ jobs:
 
       - run: npm run lint
 
-      - run: TMPDIR=./.tmp/ npm run test
+      - run: |
+          set -a
+          . ./.env.example
+          set +a
+          npm run test
 
       - uses: coverallsapp/github-action@master
         with:

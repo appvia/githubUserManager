@@ -10,3 +10,4 @@ jest.config.js
 credentials.json
 .dockerignore
 .gitignore
+.env.example
