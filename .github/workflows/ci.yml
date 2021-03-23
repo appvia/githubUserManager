@@ -5,6 +5,9 @@ on:
     branches:
       - main
   pull_request:
+  release:
+    types:
+      - created
 
 jobs:
   test:
@@ -35,3 +38,31 @@ jobs:
       - uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.github_token }}
+
+      - id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: appvia/githubUserManager/githubUserManager
+          tag-sha: true
+          tag-latest: true
+          tag-semver: |
+            {{version}}
+          label-custom: |
+            org.opencontainers.image.vendor=appvia
+            org.opencontainers.image.documentation=https://github.com/appvia/githubUserManager
+            org.opencontainers.image.authors=Chris Nesbitt-Smith <chris.nesbitt-smith@appvia.io>
+            org.opencontainers.image.url=https://github.com/appvia/githubUserManager
+            maintainer=appvia
+
+
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: appvia/githubUserManager/githubUserManager
+          tag_with_ref: true
