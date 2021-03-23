@@ -16,7 +16,7 @@ export function getAuthenticatedOctokit() {
   })
 }
 
-export async function getGithubUsersFromGithub(): Set<string> {
+export async function getGithubUsersFromGithub(): Promise<Set<string>> {
   const members = await octokit.paginate(octokit.orgs.listMembers, {
     org: process.env.GITHUB_ORG,
   })
@@ -57,7 +57,7 @@ export async function addUsersToGitHubOrg(users: Set<string>): Promise<void> {
   }
 }
 
-export async function addUserToGitHubOrg(user: string): Promise<void> {
+export async function addUserToGitHubOrg(user: string): Promise<void | boolean> {
   if (ignoredUsers.includes(user.toLowerCase())) {
     console.log(`Ignoring add for ${user}`)
     return false

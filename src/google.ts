@@ -23,12 +23,10 @@ export async function getAdminService() {
   })
 }
 
-export async function getGithubUsersFromGoogle(): Set<string> {
+export async function getGithubUsersFromGoogle(): Promise<Set<string>> {
   const service = await getAdminService()
 
-  const userList: {
-    data: { users: Array<userResponseEntry> }
-  } = await service.users.list({
+  const userList = await service.users.list({
     customer: 'my_customer',
     maxResults: 250,
     projection: 'custom',
@@ -40,11 +38,8 @@ export async function getGithubUsersFromGoogle(): Set<string> {
   return githubAccounts
 }
 
-interface userResponseEntry {
-  customSchemas: { Accounts: { github: Array<{ value: string }> } }
-}
-
-export function formatUserList(users: Array<userResponseEntry>): Set<string> {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function formatUserList(users): Set<string> {
   return new Set(
     users
       .map((user) => user?.customSchemas?.Accounts?.github.map((account) => account.value.toLowerCase()))
