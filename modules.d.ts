@@ -8,6 +8,6 @@ declare namespace NodeJS {
     GITHUB_INSTALLATION_ID: string
     GITHUB_APP_ID: string
     GITHUB_PRIVATE_KEY: string
-    IGNORED_USERS: string
+    IGNORED_USERS?: string
   }
 }

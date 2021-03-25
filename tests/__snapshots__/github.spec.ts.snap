@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`github integration addUserToGitHubOrg 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "invitee_id": 123,
+        "org": "myorg",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Promise {},
+    },
+  ],
+}
+`;
+
+exports[`github integration addUsersToGitHubOrg 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "foo",
+    ],
+    Array [
+      "bar",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Promise {},
+    },
+    Object {
+      "type": "return",
+      "value": Promise {},
+    },
+  ],
+}
+`;
+
+exports[`github integration getAuthenticatedOctokit 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "auth": Object {
+          "appId": "123",
+          "installationId": "123",
+          "privateKey": "helloworld",
+        },
+        "authStrategy": [Function],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`github integration getGithubUsersFromGithub 1`] = `
+Set {
+  "chrisns",
+  "bar",
+  "foo",
+  "pending",
+  "anotherpending",
+}
+`;
+
+exports[`github integration getIgnoredUsers empty 1`] = `Array []`;
+
+exports[`github integration getIgnoredUsers many 1`] = `
+Array [
+  "user1",
+  "user2",
+  "user3",
+  "user4",
+]
+`;
+
+exports[`github integration getIgnoredUsers single 1`] = `
+Array [
+  "user1",
+]
+`;
+
+exports[`github integration getUserIdFromUsername found 1`] = `123`;
+
+exports[`github integration getUserIdFromUsername notfound 1`] = `"Unable to find user id for foo"`;
+
+exports[`github integration removeUserToGitHubOrg 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "org": "myorg",
+        "username": "foo",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Promise {},
+    },
+  ],
+}
+`;
+
+exports[`github integration removeUsersToGitHubOrg 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "foo",
+    ],
+    Array [
+      "bar",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Promise {},
+    },
+    Object {
+      "type": "return",
+      "value": Promise {},
+    },
+  ],
+}
+`;

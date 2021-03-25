@@ -22,12 +22,11 @@ describe('google integration', () => {
     process.env.GOOGLE_CREDENTIALS = Buffer.from(JSON.stringify({ client_email: 'foo', private_key: 'bar' })).toString(
       'base64',
     )
-    jest.resetAllMocks()
+    jest.restoreAllMocks()
   })
   it('googleAuth', () => {
     mod.googleAuth()
-    // @ts-expect-error .mocks isn't on the original object so will fail
-    return expect(google.auth.JWT.mock.calls).toMatchSnapshot()
+    return expect(google.auth.JWT).toMatchSnapshot()
   })
   it('getAdminService', () => {
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum

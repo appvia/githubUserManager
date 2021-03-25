@@ -8,6 +8,8 @@ module.exports = {
   coverageReporters: ['lcovonly', 'text'],
   collectCoverage: true,
   coverageDirectory: 'coverage',
+  restoreMocks: true,
+
   collectCoverageFrom: [
     '**/*.ts',
     '**/*.js',

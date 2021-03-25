@@ -1,11 +1,12 @@
 import { createAppAuth } from '@octokit/auth-app'
 import { Octokit } from '@octokit/rest'
-const ignoredUsers = process.env.IGNORED_USERS.toLowerCase().split(',')
+import * as mod from './github'
 
-const octokit = getAuthenticatedOctokit()
+export function getIgnoredUsers(): string[] {
+  return process.env.IGNORED_USERS?.toLowerCase().split(',') ?? []
+}
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function getAuthenticatedOctokit() {
+export function getAuthenticatedOctokit(): Octokit {
   return new Octokit({
     authStrategy: createAppAuth,
     auth: {
@@ -17,6 +18,7 @@ export function getAuthenticatedOctokit() {
 }
 
 export async function getGithubUsersFromGithub(): Promise<Set<string>> {
+  const octokit = mod.getAuthenticatedOctokit()
   const members = await octokit.paginate(octokit.orgs.listMembers, {
     org: process.env.GITHUB_ORG,
   })
@@ -36,10 +38,11 @@ export async function getGithubUsersFromGithub(): Promise<Set<string>> {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function formatUserList(users): Set<string> {
-  return new Set(users.map((user) => user.login.toLowerCase()))
+  return new Set(users.map((user) => user?.login?.toLowerCase()))
 }
 
 export async function getUserIdFromUsername(username: string): Promise<number> {
+  const octokit = mod.getAuthenticatedOctokit()
   console.log(`Looking up user ${username}`)
   let user
   try {
@@ -53,33 +56,36 @@ export async function getUserIdFromUsername(username: string): Promise<number> {
 
 export async function addUsersToGitHubOrg(users: Set<string>): Promise<void> {
   for (const user of users) {
-    await addUserToGitHubOrg(user)
+    await mod.addUserToGitHubOrg(user)
   }
 }
 
-export async function addUserToGitHubOrg(user: string): Promise<void | boolean> {
-  if (ignoredUsers.includes(user.toLowerCase())) {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export async function addUserToGitHubOrg(user: string) {
+  const octokit = mod.getAuthenticatedOctokit()
+  console.log(user, mod.getIgnoredUsers(), mod.getIgnoredUsers().includes(user.toLowerCase()))
+  if (mod.getIgnoredUsers().includes(user.toLowerCase())) {
     console.log(`Ignoring add for ${user}`)
     return false
   }
-  const userId = await getUserIdFromUsername(user)
+  const userId = await mod.getUserIdFromUsername(user)
   console.log(`Inviting ${user} (${userId} to ${process.env.GITHUB_ORG})`)
-  await octokit.orgs.createInvitation({
+  return await octokit.orgs.createInvitation({
     org: process.env.GITHUB_ORG,
     invitee_id: userId,
   })
-  console.log(`Invitation sent to ${user} (${userId} to ${process.env.GITHUB_ORG})`)
 }
 
 export async function removeUsersToGitHubOrg(users: Set<string>): Promise<void> {
   for (const user of users) {
-    await removeUserToGitHubOrg(user)
+    await mod.removeUserToGitHubOrg(user)
   }
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function removeUserToGitHubOrg(user: string) {
-  if (ignoredUsers.includes(user.toLowerCase())) {
+  const octokit = mod.getAuthenticatedOctokit()
+  if (mod.getIgnoredUsers().includes(user.toLowerCase())) {
     console.log(`Ignoring remove for ${user}`)
     return false
   }
