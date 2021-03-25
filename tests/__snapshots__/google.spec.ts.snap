@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`google integration getGithubUsersFromGoogle 1`] = `
+Set {
+  "chrisns",
+  "foo",
+  "tar",
+  "bar",
+}
+`;
+
+exports[`google integration googleAuth 1`] = `
+Array [
+  Array [
+    "foo",
+    null,
+    "bar",
+    Array [
+      "https://www.googleapis.com/auth/admin.directory.user.readonly",
+    ],
+    "hello@example.com",
+  ],
+]
+`;

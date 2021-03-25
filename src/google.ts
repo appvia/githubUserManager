@@ -1,9 +1,8 @@
 import { google } from 'googleapis'
-
-const privatekey = JSON.parse(Buffer.from(process.env.GOOGLE_CREDENTIALS, 'base64').toString('utf-8'))
-
+import * as mod from './google'
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function googleAuth() {
+  const privatekey = JSON.parse(Buffer.from(process.env.GOOGLE_CREDENTIALS, 'base64').toString('utf-8'))
   const jwtClient = new google.auth.JWT(
     privatekey.client_email,
     null,
@@ -24,7 +23,7 @@ export async function getAdminService() {
 }
 
 export async function getGithubUsersFromGoogle(): Promise<Set<string>> {
-  const service = await getAdminService()
+  const service = await mod.getAdminService()
 
   const userList = await service.users.list({
     customer: 'my_customer',
@@ -34,7 +33,7 @@ export async function getGithubUsersFromGoogle(): Promise<Set<string>> {
     customFieldMask: 'Accounts',
   })
 
-  const githubAccounts = formatUserList(userList.data.users)
+  const githubAccounts = mod.formatUserList(userList.data.users)
   return githubAccounts
 }
 
@@ -42,7 +41,7 @@ export async function getGithubUsersFromGoogle(): Promise<Set<string>> {
 export function formatUserList(users): Set<string> {
   return new Set(
     users
-      .map((user) => user?.customSchemas?.Accounts?.github.map((account) => account.value.toLowerCase()))
+      .map((user) => user.customSchemas?.Accounts?.github.map((account) => account?.value?.toLowerCase()))
       .flat()
       .filter(Boolean),
   )
