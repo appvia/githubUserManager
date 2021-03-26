@@ -23,7 +23,7 @@
     "ts-jest": "^26.5.4"
   },
   "dependencies": {
-    "@octokit/auth-app": "^3.0.0",
+    "@octokit/auth-app": "^3.3.0",
     "@octokit/rest": "^18.5.0",
     "googleapis": "^68.0.0",
     "ts-node": "^9.1.1",
