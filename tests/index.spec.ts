@@ -20,7 +20,6 @@ describe('missmatch', () => {
     google.getGithubUsersFromGoogle.mockResolvedValue(new Set(['a', 'd']))
     // @ts-expect-error mockResolved unexpected
     github.getGithubUsersFromGithub.mockResolvedValue(new Set(['b', 'c', 'a']))
-    // github.addUsersToGitHubOrg
   })
   it('should have consistent console output', async () => {
     await mod.run()
@@ -37,10 +36,12 @@ describe('missmatch', () => {
     return expect(processExitSpy).toBeCalledWith(122)
   })
   it('should not add users if not set to', async () => {
+    delete process.env.ADD_USERS
     await mod.run()
     return expect(github.addUsersToGitHubOrg).not.toBeCalled()
   })
   it('should not remove users if not set to', async () => {
+    delete process.env.REMOVE_USERS
     await mod.run()
     return expect(github.removeUsersToGitHubOrg).not.toBeCalled()
   })
