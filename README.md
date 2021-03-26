@@ -29,17 +29,17 @@ Right now this only handles the organization membership, it **does not** touch t
 
 1.  [Add values to custom attributes for the users](https://support.google.com/a/answer/6208725?hl=en#add_value)
 
-    1.  go to https://admin.google.com/ac/users
-    1.  click a user to edit them
-    1.  click 'user information'
-    1.  under Accounts, click `github`
-    1.  add all the github accounts for that user
-    1.  click Save
+    1.  Go to https://admin.google.com/ac/users
+    1.  Click a user to edit them
+    1.  Click 'user information'
+    1.  Under Accounts, click `github`
+    1.  Add all the github accounts for that user
+    1.  Click Save
 
 1.  [Make a gcp project](https://console.cloud.google.com/projectcreate)
 
-    1. enable the [Admin SDK API](https://console.cloud.google.com/apis/library/admin.googleapis.com?q=workspace%20admin&id=d0a160dd-c410-4fd0-a951-c47e05309cb9)
-    1. [create credentials](https://console.cloud.google.com/apis/credentials/wizard?project=githubusermanager)
+    1. Enable the [Admin SDK API](https://console.cloud.google.com/apis/library/admin.googleapis.com?q=workspace%20admin&id=d0a160dd-c410-4fd0-a951-c47e05309cb9)
+    1. [Create credentials](https://console.cloud.google.com/apis/credentials/wizard?project=githubusermanager)
 
     - Which API are you using?: `Admin SDK API`
     - Are you planning to use this API with App Engine or Compute Engine: `no`
@@ -47,22 +47,22 @@ Right now this only handles the organization membership, it **does not** touch t
     - Role: `[none]`
     - Key type: `JSON`
     - Click `Continue`, then confirm `CREATE WITHOUT ROLE`
-    - edit the user, Click `Enable G Suite domain-wide delegation`
-    - product name for the consent screen: `githubusermanager`
+    - Edit the user, Click `Enable G Suite domain-wide delegation`
+    - Product name for the consent screen: `githubusermanager`
 
     1. [Delegate domain-wide authority to your service account](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
 
     - https://admin.google.com/ac/owl/domainwidedelegation
-    - client ID: `client id from user`
+    - Client ID: `client id from user`
     - OAuth scopes:
       - `https://www.googleapis.com/auth/admin.directory.user.readonly`
 
 1.  Register new GitHub App
     1. https://github.com/settings/organizations
-    - click `Settings` on your organization
-    - click `Developer settings`
-    - click `GitHub Apps`
-    - click `New GitHub App`
+    - Click `Settings` on your organization
+    - Click `Developer settings`
+    - Click `GitHub Apps`
+    - Click `New GitHub App`
     1. Enter:
     - GitHub App name: `Google workspace github users`
     - Homepage URL: github.com
@@ -82,7 +82,7 @@ Right now this only handles the organization membership, it **does not** touch t
 #### Github Action:
 
 ```yaml
-# ./github/workflows/org-membership.yml
+# ./.github/workflows/org-membership.yml
 name: Github Org Membership
 
 on:
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Github Org Membership Manager
-        uses: appvia/githubUserManager@v1
+        uses: appvia/githubUserManager@v1.0.1
         with:
           google-email-address: hello@example.com
           google-credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
@@ -103,18 +103,30 @@ jobs:
           github-org: 'myorg'
           github-app-id: 1234
           github-installation-id: 12345
-          github-private-key: ${{ secrets.GITHUB_PRIVATE_KEY }}
+          github-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           ignored-users: user1,user2
+```
+
+Add a dependabot configuration to always get updates!
+
+```yaml
+# ./.github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
 ```
 
 #### Docker
 
-1. make an [env file](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux) with the [below table](#Setup-environment-variables)
+1. Make an [env file](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux) with the [below table](#Setup-environment-variables)
 1. `docker run --env-file .env docker.pkg.github.com/appvia/githubusermanager/githubusermanager:main`
 
 #### node/lambda/cloud run/ something else
 
-1.  clone this repo
+1.  Clone this repo
 1.  `npm install --production`
 1.  `npm start` (with the with the [below environment variables table](#Setup-environment-variables) set)
 
