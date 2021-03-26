@@ -69,7 +69,7 @@ Right now this only handles the organization membership, it **does not** touch t
     - Webhook
       - Active `uncheck`
     - Organization permissions
-      - Members: `Read-only`
+      - Members: `Read-only`, or `Read-Write` if you want it to
     - Where can this GitHub App be installed? `Only on this account`
     1. Click `Generate a private key` (should download a .pem)
     1. Click `Install App`
