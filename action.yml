@@ -1,6 +1,9 @@
 name: 'Google workspace user to GitHub Org User'
 description: 'Manage GitHub organisation membership with Google Workspace user accounts'
 author: Chris Nesbitt-Smith 
+icon: user-check
+color: black
+
 inputs:
   google-email-address:
     description: 'Email address to assume to, needs to be an workspace admin'
