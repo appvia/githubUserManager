@@ -11,3 +11,8 @@ credentials.json
 .dockerignore
 .gitignore
 .env.example
+wallaby.js
+.env
+.eslintrc.js
+.prettierrc.js
+action.yml
