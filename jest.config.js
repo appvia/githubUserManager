@@ -9,6 +9,7 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   restoreMocks: true,
+  resetMocks: true,
 
   collectCoverageFrom: [
     '**/*.ts',

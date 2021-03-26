@@ -22,7 +22,7 @@ describe('google integration', () => {
     process.env.GOOGLE_CREDENTIALS = Buffer.from(JSON.stringify({ client_email: 'foo', private_key: 'bar' })).toString(
       'base64',
     )
-    jest.restoreAllMocks()
+    jest.spyOn(global.console, 'log').mockImplementation()
   })
   it('googleAuth', () => {
     mod.googleAuth()
@@ -44,6 +44,17 @@ describe('google integration', () => {
     expect(result).resolves.toMatchSnapshot()
   })
 
-  it('formatUserList', () =>
-    expect(mod.formatUserList(fakeUsersResponse)).toEqual(new Set(['chrisns', 'foo', 'bar', 'tar'])))
+  it('formatUserList', () => expect(mod.formatUserList(fakeUsersResponse)).toMatchSnapshot())
+
+  it('formatUserList bad', () =>
+    expect(
+      mod.formatUserList([
+        {},
+        { customSchemas: {} },
+        { customSchemas: { Accounts: {} } },
+        { customSchemas: { Accounts: { github: [] } } },
+        { customSchemas: { Accounts: { github: [{}] } } },
+        { customSchemas: { Accounts: { github: [{ value: 'chrisns' }] } } },
+      ]),
+    ).toMatchSnapshot())
 })

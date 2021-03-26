@@ -1,13 +1,13 @@
 jest.mock('@octokit/rest')
 import { Octokit } from '@octokit/rest'
-
 import * as mod from '../src/github'
+
 describe('github integration', () => {
   beforeEach(() => {
     process.env.GITHUB_PRIVATE_KEY = Buffer.from('helloworld').toString('base64')
     process.env.GITHUB_APP_ID = '123'
     process.env.GITHUB_INSTALLATION_ID = '123'
-    jest.restoreAllMocks()
+    jest.spyOn(global.console, 'log').mockImplementation()
   })
 
   it('getAuthenticatedOctokit', () => {

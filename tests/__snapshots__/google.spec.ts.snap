@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`google integration formatUserList 1`] = `
+Set {
+  "chrisns",
+  "foo",
+  "tar",
+  "bar",
+}
+`;
+
+exports[`google integration formatUserList bad 1`] = `
+Set {
+  "chrisns",
+}
+`;
+
 exports[`google integration getGithubUsersFromGoogle 1`] = `
 Set {
   "chrisns",
