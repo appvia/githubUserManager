@@ -38,7 +38,12 @@ export async function getGithubUsersFromGithub(): Promise<Set<string>> {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function formatUserList(users): Set<string> {
-  return new Set(users.map((user) => user?.login?.toLowerCase()))
+  return new Set(
+    users
+      .map((user) => user.login?.toLowerCase())
+      .flat()
+      .filter(Boolean),
+  )
 }
 
 export async function getUserIdFromUsername(username: string): Promise<number> {

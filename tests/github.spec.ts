@@ -115,8 +115,7 @@ describe('github integration', () => {
   })
 
   it('formatUserList', () => {
-    const response = [{ login: 'chrisns' }, { login: 'chrisns' }, { login: 'foo' }]
-
+    const response = [{ login: 'chrisns' }, { login: 'chrisns' }, { login: 'foo' }, {}]
     return expect(mod.formatUserList(response)).toEqual(new Set(['chrisns', 'foo']))
   })
 })
