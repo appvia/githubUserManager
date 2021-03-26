@@ -10,7 +10,7 @@ on:
       - created
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,23 +29,7 @@ jobs:
 
       - run: npm run lint
 
-      - run: |
-          set -a
-          . ./.env.example
-          set +a
-          npm run test
-
-      - uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.github_token }}
-
-      - name: Login to dockerhub
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: docker/login-action@v1
-        with:
-          registry: docker.pkg.github.com
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm run test
 
       - id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
@@ -59,10 +43,15 @@ jobs:
             org.opencontainers.image.vendor=appvia
             org.opencontainers.image.documentation=https://github.com/appvia/githubUserManager
             org.opencontainers.image.authors=Chris Nesbitt-Smith <chris.nesbitt-smith@appvia.io>
-            org.opencontainers.image.url=https://github.com/appvia/githubUserManager
             maintainer=appvia
 
-
+      - name: Login to docker registry
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v2
