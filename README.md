@@ -131,4 +131,4 @@ jobs:
 | `GITHUB_APP_ID`          | GitHub App ID                                                                                                                   | `106341`          | `null`  |
 | `GITHUB_INSTALLATION_ID` | Github App Installation ID                                                                                                      | `15627551`        | `null`  |
 | `GITHUB_PRIVATE_KEY`     | Base64'd private key as downloaded from github application registration step                                                    | `Zm9vCg==`        | `null`  |
-| `IGNORED_USERS`          | Comma separated list of user ids to totally ignore always, useful for owners of an org you don't accidentally removed           | `owner1,owner2`   | `null`  |
+| `IGNORED_USERS`          | Comma separated list of user ids to totally ignore always, useful for owners of an org you don't want accidentally removed      | `owner1,owner2`   | `null`  |

@@ -6,7 +6,7 @@ inputs:
     description: 'Email address to assume to, needs to be an workspace admin'
     required: true
   google-credentials:
-    description: 'Base64'd json as downloaded from the google service account creation step'
+    description: 'Base64d json as downloaded from the google service account creation step'
     required: true
   add-users:
     description: 'Set to TRUE to add users to the github organisation'
@@ -15,7 +15,7 @@ inputs:
     description: 'Set to TRUE to remove users from the github organisation'
     required: false
   exit-code-on-missmatch:
-    description: 'Exit code to use when there's a mismatch, useful when combined with `ADD_USERS` and `REMOVE_USERS` to be used in a dry-run mode'
+    description: 'Exit code to use when there is a mismatch, useful when combined with `ADD_USERS` and `REMOVE_USERS` to be used in a dry-run mode'
     required: false
   github-org:
     description: 'GitHub Organization  '
@@ -27,10 +27,10 @@ inputs:
     description: 'Github App Installation ID'
     required: true
   github-private-key:
-    description: 'Base64'd private key as downloaded from github application registration step'
+    description: 'Base64d private key as downloaded from github application registration step'
     required: true
   ignored-users:
-    description: 'Comma separated list of user ids to totally ignore always, useful for owners of an org you don't accidentally removed'
+    description: 'Comma separated list of user ids to totally ignore always, useful for owners of an org you do not want accidentally removed'
     required: false
 runs:
   using: 'docker'
