@@ -43,7 +43,7 @@ describe('missmatch', () => {
   it('should not remove users if not set to', async () => {
     delete process.env.REMOVE_USERS
     await mod.run()
-    return expect(github.removeUsersToGitHubOrg).not.toBeCalled()
+    return expect(github.removeUsersFromGitHubOrg).not.toBeCalled()
   })
   it('should add users if set to', async () => {
     process.env.ADD_USERS = 'true'
@@ -53,7 +53,7 @@ describe('missmatch', () => {
   it('should remove users if set to', async () => {
     process.env.REMOVE_USERS = 'true'
     await mod.run()
-    return expect(github.removeUsersToGitHubOrg).toMatchSnapshot()
+    return expect(github.removeUsersFromGitHubOrg).toMatchSnapshot()
   })
   it('should have consistent console output with full destructive mode on', async () => {
     process.env.REMOVE_USERS = 'true'
@@ -91,6 +91,6 @@ describe('match', () => {
   it('should not remove users', async () => {
     process.env.REMOVE_USERS = 'true'
     await mod.run()
-    return expect(github.removeUsersToGitHubOrg).not.toBeCalled()
+    return expect(github.removeUsersFromGitHubOrg).not.toBeCalled()
   })
 })

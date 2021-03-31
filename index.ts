@@ -1,5 +1,5 @@
 import { getGithubUsersFromGoogle } from './src/google'
-import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersToGitHubOrg } from './src/github'
+import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersFromGitHubOrg } from './src/github'
 import { config } from './src/config'
 
 export async function run(): Promise<void> {
@@ -19,7 +19,7 @@ export async function run(): Promise<void> {
 
   if (usersNotInGoogle.size > 0) {
     console.log(`Users not in google: ${Array.from(usersNotInGoogle).join(', ')}`)
-    if (config.removeUsers) await removeUsersToGitHubOrg(usersNotInGoogle)
+    if (config.removeUsers) await removeUsersFromGitHubOrg(usersNotInGoogle)
   }
 
   const exitCode = usersNotInGoogle.size > 0 || usersNotInGithub.size > 0 ? config.exitCodeOnMissmatch : 0
