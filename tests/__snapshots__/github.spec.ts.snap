@@ -79,7 +79,7 @@ exports[`github integration getUserIdFromUsername found 1`] = `123`;
 
 exports[`github integration getUserIdFromUsername notfound 1`] = `"Unable to find user id for foo"`;
 
-exports[`github integration removeUserToGitHubOrg 1`] = `
+exports[`github integration removeUserFromGitHubOrg 1`] = `
 [MockFunction] {
   "calls": Array [
     Array [
