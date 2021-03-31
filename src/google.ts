@@ -1,14 +1,16 @@
 import { google } from 'googleapis'
 import * as mod from './google'
+import { config } from './config'
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function googleAuth() {
-  const privatekey = JSON.parse(Buffer.from(process.env.GOOGLE_CREDENTIALS, 'base64').toString('utf-8'))
+  const privatekey = config.googleCredentials
   const jwtClient = new google.auth.JWT(
     privatekey.client_email,
     null,
     privatekey.private_key,
     ['https://www.googleapis.com/auth/admin.directory.user.readonly'],
-    process.env.GOOGLE_EMAIL_ADDRESS,
+    config.googleEmailAddress,
   )
   await jwtClient.authorize()
   return jwtClient

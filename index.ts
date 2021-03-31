@@ -1,5 +1,6 @@
 import { getGithubUsersFromGoogle } from './src/google'
 import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersToGitHubOrg } from './src/github'
+import { config } from './src/config'
 
 export async function run(): Promise<void> {
   const googleUsers = await getGithubUsersFromGoogle()
@@ -13,19 +14,17 @@ export async function run(): Promise<void> {
   const usersNotInGoogle = new Set(Array.from(gitHubUsers).filter((x) => !googleUsers.has(x)))
   if (usersNotInGithub.size > 0) {
     console.log(`Users not in github: ${Array.from(usersNotInGithub).join(', ')}`)
-    if (process.env.ADD_USERS?.toLowerCase() === 'true') await addUsersToGitHubOrg(usersNotInGithub)
+    if (config.addUsers) await addUsersToGitHubOrg(usersNotInGithub)
   }
 
   if (usersNotInGoogle.size > 0) {
     console.log(`Users not in google: ${Array.from(usersNotInGoogle).join(', ')}`)
-    if (process.env.REMOVE_USERS?.toLowerCase() === 'true') await removeUsersToGitHubOrg(usersNotInGoogle)
+    if (config.removeUsers) await removeUsersToGitHubOrg(usersNotInGoogle)
   }
 
-  let exitCode
-  if (usersNotInGoogle.size > 0 || usersNotInGithub.size > 0)
-    exitCode = parseInt(process.env.EXIT_CODE_ON_MISMATCH ?? '0')
+  const exitCode = usersNotInGoogle.size > 0 || usersNotInGithub.size > 0 ? config.exitCodeOnMissmatch : 0
 
-  process.exit(exitCode ?? 0)
+  process.exit(exitCode)
 }
 
 // istanbul ignore next

@@ -48,8 +48,8 @@ exports[`github integration getAuthenticatedOctokit 1`] = `
     Array [
       Object {
         "auth": Object {
-          "appId": "123",
-          "installationId": "123",
+          "appId": 123,
+          "installationId": 123,
           "privateKey": "helloworld",
         },
         "authStrategy": [Function],
@@ -73,23 +73,6 @@ Set {
   "pending",
   "anotherpending",
 }
-`;
-
-exports[`github integration getIgnoredUsers empty 1`] = `Array []`;
-
-exports[`github integration getIgnoredUsers many 1`] = `
-Array [
-  "user1",
-  "user2",
-  "user3",
-  "user4",
-]
-`;
-
-exports[`github integration getIgnoredUsers single 1`] = `
-Array [
-  "user1",
-]
 `;
 
 exports[`github integration getUserIdFromUsername found 1`] = `123`;
