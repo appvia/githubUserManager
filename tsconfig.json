@@ -4,6 +4,7 @@
     "resolveJsonModule": true,
     "declaration": true,
     "lib": ["es2020"],
+    "target": "es2020",
     "downlevelIteration": true
   },
   "exclude": ["node_modules", "tests/**"]

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ignoredUsers getIgnoredUsers empty 1`] = `Array []`;
+
+exports[`ignoredUsers getIgnoredUsers many 1`] = `
+Array [
+  "user1",
+  "user2",
+  "user3",
+  "user4",
+]
+`;
+
+exports[`ignoredUsers getIgnoredUsers single 1`] = `
+Array [
+  "user1",
+]
+`;

@@ -1,12 +1,13 @@
 jest.mock('@octokit/rest')
 import { Octokit } from '@octokit/rest'
+import { config } from '../src/config'
 import * as mod from '../src/github'
 
 describe('github integration', () => {
   beforeEach(() => {
-    process.env.GITHUB_PRIVATE_KEY = Buffer.from('helloworld').toString('base64')
-    process.env.GITHUB_APP_ID = '123'
-    process.env.GITHUB_INSTALLATION_ID = '123'
+    jest.spyOn(config, 'githubPrivateKey', 'get').mockReturnValue('helloworld')
+    jest.spyOn(config, 'githubAppID', 'get').mockReturnValue(123)
+    jest.spyOn(config, 'githubInstallationID', 'get').mockReturnValue(123)
     jest.spyOn(global.console, 'log').mockImplementation()
   })
 
@@ -63,12 +64,12 @@ describe('github integration', () => {
   })
 
   it('removeUserToGitHubOrg skip ignore', () => {
-    jest.spyOn(mod, 'getIgnoredUsers').mockReturnValue(['foo'])
+    jest.spyOn(config, 'ignoredUsers', 'get').mockReturnValue(['foo'])
     expect(mod.removeUserToGitHubOrg('foo')).resolves.toBe(false)
   })
 
   it('addUserToGitHubOrg skip ignore', () => {
-    jest.spyOn(mod, 'getIgnoredUsers').mockReturnValue(['foo'])
+    jest.spyOn(config, 'ignoredUsers', 'get').mockReturnValue(['foo'])
     expect(mod.addUserToGitHubOrg('foo')).resolves.toBe(false)
   })
 
@@ -78,7 +79,7 @@ describe('github integration', () => {
         createInvitation: jest.fn().mockResolvedValue(true),
       },
     }
-    process.env.GITHUB_ORG = 'myorg'
+    jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     jest.spyOn(mod, 'getUserIdFromUsername').mockResolvedValue(123)
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
     jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
@@ -92,26 +93,12 @@ describe('github integration', () => {
         removeMembershipForUser: jest.fn().mockResolvedValue(true),
       },
     }
-    process.env.GITHUB_ORG = 'myorg'
+    jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     jest.spyOn(mod, 'getUserIdFromUsername').mockResolvedValue(123)
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
     jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
     await mod.removeUserToGitHubOrg('foo')
     return expect(fakeOctokit.orgs.removeMembershipForUser).toMatchSnapshot()
-  })
-
-  it('getIgnoredUsers empty', () => {
-    delete process.env.IGNORED_USERS
-    expect(mod.getIgnoredUsers()).toMatchSnapshot()
-  })
-
-  it('getIgnoredUsers single', () => {
-    process.env.IGNORED_USERS = 'user1'
-    expect(mod.getIgnoredUsers()).toMatchSnapshot()
-  })
-  it('getIgnoredUsers many', () => {
-    process.env.IGNORED_USERS = 'user1,user2,user3,USER4'
-    expect(mod.getIgnoredUsers()).toMatchSnapshot()
   })
 
   it('formatUserList', () => {
