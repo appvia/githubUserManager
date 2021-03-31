@@ -80,7 +80,7 @@ export async function addUserToGitHubOrg(
   })
 }
 
-export async function removeUsersToGitHubOrg(users: Set<string>): Promise<void> {
+export async function removeUsersFromGitHubOrg(users: Set<string>): Promise<void> {
   for (const user of users) {
     await mod.removeUserToGitHubOrg(user)
   }

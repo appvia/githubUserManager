@@ -98,7 +98,7 @@ exports[`github integration removeUserToGitHubOrg 1`] = `
 }
 `;
 
-exports[`github integration removeUsersToGitHubOrg 1`] = `
+exports[`github integration removeUsersFromGitHubOrg 1`] = `
 [MockFunction] {
   "calls": Array [
     Array [

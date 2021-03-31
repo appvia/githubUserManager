@@ -56,10 +56,10 @@ describe('github integration', () => {
     return expect(mod.addUserToGitHubOrg).toMatchSnapshot()
   })
 
-  it('removeUsersToGitHubOrg', async () => {
+  it('removeUsersFromGitHubOrg', async () => {
     const users = new Set(['foo', 'bar'])
     jest.spyOn(mod, 'removeUserToGitHubOrg').mockResolvedValue(false)
-    await mod.removeUsersToGitHubOrg(users)
+    await mod.removeUsersFromGitHubOrg(users)
     return expect(mod.removeUserToGitHubOrg).toMatchSnapshot()
   })
 
