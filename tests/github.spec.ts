@@ -58,14 +58,14 @@ describe('github integration', () => {
 
   it('removeUsersFromGitHubOrg', async () => {
     const users = new Set(['foo', 'bar'])
-    jest.spyOn(mod, 'removeUserToGitHubOrg').mockResolvedValue(false)
+    jest.spyOn(mod, 'removeUserFromGitHubOrg').mockResolvedValue(false)
     await mod.removeUsersFromGitHubOrg(users)
-    return expect(mod.removeUserToGitHubOrg).toMatchSnapshot()
+    return expect(mod.removeUserFromGitHubOrg).toMatchSnapshot()
   })
 
-  it('removeUserToGitHubOrg skip ignore', () => {
+  it('removeUserFromGitHubOrg skip ignore', () => {
     jest.spyOn(config, 'ignoredUsers', 'get').mockReturnValue(['foo'])
-    expect(mod.removeUserToGitHubOrg('foo')).resolves.toBe(false)
+    expect(mod.removeUserFromGitHubOrg('foo')).resolves.toBe(false)
   })
 
   it('addUserToGitHubOrg skip ignore', () => {
@@ -87,7 +87,7 @@ describe('github integration', () => {
     return expect(fakeOctokit.orgs.createInvitation).toMatchSnapshot()
   })
 
-  it('removeUserToGitHubOrg', async () => {
+  it('removeUserFromGitHubOrg', async () => {
     const fakeOctokit = {
       orgs: {
         removeMembershipForUser: jest.fn().mockResolvedValue(true),
@@ -97,7 +97,7 @@ describe('github integration', () => {
     jest.spyOn(mod, 'getUserIdFromUsername').mockResolvedValue(123)
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
     jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
-    await mod.removeUserToGitHubOrg('foo')
+    await mod.removeUserFromGitHubOrg('foo')
     return expect(fakeOctokit.orgs.removeMembershipForUser).toMatchSnapshot()
   })
 

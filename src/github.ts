@@ -82,12 +82,12 @@ export async function addUserToGitHubOrg(
 
 export async function removeUsersFromGitHubOrg(users: Set<string>): Promise<void> {
   for (const user of users) {
-    await mod.removeUserToGitHubOrg(user)
+    await mod.removeUserFromGitHubOrg(user)
   }
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export async function removeUserToGitHubOrg(
+export async function removeUserFromGitHubOrg(
   user: string,
 ): Promise<GetResponseTypeFromEndpointMethod<typeof octokit.orgs.removeMembershipForUser> | boolean> {
   const octokit = mod.getAuthenticatedOctokit()
