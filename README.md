@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Github Org Membership Manager
-        uses: appvia/githubUserManager@v1.0.1
+        uses: appvia/githubUserManager@v1.0.5
         with:
           google-email-address: hello@example.com
           google-credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
@@ -105,6 +105,8 @@ jobs:
           github-installation-id: 12345
           github-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           ignored-users: user1,user2
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-actor: ${{ github.actor }}
 ```
 
 Add a dependabot configuration to always get updates!
