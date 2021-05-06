@@ -36,10 +36,10 @@ inputs:
     description: 'Comma separated list of user ids to totally ignore always, useful for owners of an org you do not want accidentally removed'
     required: false
   github-token:
-    description: github token to use to pull the docker image ${{ secrets.GITHUB_TOKEN }} is probably fine
+    description: github token to use to pull the docker image secrets.GITHUB_TOKEN is probably fine
     required: true
   github-actor:
-    description: github actor to use to pull the docker image ${{ github.actor }} is probably fine
+    description: github actor to use to pull the docker image github.actor is probably fine
     required: true
 runs:
   using: "composite"
