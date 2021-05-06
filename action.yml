@@ -37,7 +37,7 @@ inputs:
     required: false
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://docker.pkg.github.com/appvia/githubusermanager/githubusermanager:latest'
   env:
      GOOGLE_EMAIL_ADDRESS: ${{ inputs.google-email-address }}
      GOOGLE_CREDENTIALS: ${{ inputs.google-credentials }}
