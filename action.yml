@@ -35,18 +35,45 @@ inputs:
   ignored-users:
     description: 'Comma separated list of user ids to totally ignore always, useful for owners of an org you do not want accidentally removed'
     required: false
+  github-token:
+    description: github token to use to pull the docker image ${{ secrets.GITHUB_TOKEN }} is probably fine
+    required: true
+  github-actor:
+    description: github actor to use to pull the docker image ${{ github.actor }} is probably fine
+    required: true
 runs:
-  using: 'docker'
-  image: 'docker://docker.pkg.github.com/appvia/githubusermanager/githubusermanager:v1.0.3'
-  env:
-     GOOGLE_EMAIL_ADDRESS: ${{ inputs.google-email-address }}
-     GOOGLE_CREDENTIALS: ${{ inputs.google-credentials }}
-     ADD_USERS: ${{ inputs.add-users }}
-     REMOVE_USERS: ${{ inputs.remove-users }}
-     EXIT_CODE_ON_MISMATCH: ${{ inputs.exit-code-on-missmatch }}
-     GITHUB_ORG: ${{ inputs.github-org }}
-     GITHUB_APP_ID: ${{ inputs.github-app-id }}
-     GITHUB_INSTALLATION_ID: ${{ inputs.github-installation-id }}
-     GITHUB_PRIVATE_KEY: ${{ inputs.github-private-key }}
-     IGNORED_USERS: ${{ inputs.ignored-users }}
+  using: "composite"
+  steps:
+    - name: Login to docker.pkg.github.com
+      shell: bash
+      run: echo ${PASSWORD} | docker login --username ${USERNAME} --password-stdin docker.pkg.github.com
+      env:
+        USERNAME: ${{ inputs.github-actor }}
+        PASSWORD: ${{ inputs.github-token }}
+    - name: Run
+      run: |
+        docker run --rm \
+        -e GOOGLE_EMAIL_ADDRESS="$GOOGLE_EMAIL_ADDRESS" \
+        -e GOOGLE_CREDENTIALS="$GOOGLE_CREDENTIALS" \
+        -e ADD_USERS="$ADD_USERS" \
+        -e REMOVE_USERS="$REMOVE_USERS" \
+        -e EXIT_CODE_ON_MISMATCH="$EXIT_CODE_ON_MISMATCH" \
+        -e GITHUB_ORG="$GITHUB_ORG" \
+        -e GITHUB_APP_ID="$GITHUB_APP_ID" \
+        -e GITHUB_INSTALLATION_ID="$GITHUB_INSTALLATION_ID" \
+        -e GITHUB_PRIVATE_KEY="$GITHUB_PRIVATE_KEY" \
+        -e IGNORED_USERS="$IGNORED_USERS" \
+        docker.pkg.github.com/appvia/githubusermanager/githubusermanager:v1.0.3
+      shell: bash
+      env:
+        GOOGLE_EMAIL_ADDRESS: ${{ inputs.google-email-address }}
+        GOOGLE_CREDENTIALS: ${{ inputs.google-credentials }}
+        ADD_USERS: ${{ inputs.add-users }}
+        REMOVE_USERS: ${{ inputs.remove-users }}
+        EXIT_CODE_ON_MISMATCH: ${{ inputs.exit-code-on-missmatch }}
+        GITHUB_ORG: ${{ inputs.github-org }}
+        GITHUB_APP_ID: ${{ inputs.github-app-id }}
+        GITHUB_INSTALLATION_ID: ${{ inputs.github-installation-id }}
+        GITHUB_PRIVATE_KEY: ${{ inputs.github-private-key }}
+        IGNORED_USERS: ${{ inputs.ignored-users }}
 
