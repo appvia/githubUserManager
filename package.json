@@ -14,7 +14,7 @@
   "devDependencies": {
     "@octokit/types": "^6.13.0",
     "@types/jest": "^26.0.23",
-    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
