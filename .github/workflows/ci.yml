@@ -32,7 +32,7 @@ jobs:
       - run: npm run test
 
       - id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v3.3.0
+        uses: crazy-max/ghaction-docker-meta@v3.5.0
         with:
           images: docker.pkg.github.com/appvia/githubUserManager/githubUserManager
           tag-sha: true
@@ -54,7 +54,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push to GitHub Packages
-        uses: docker/build-push-action@v2.5.0
+        uses: docker/build-push-action@v2.7.0
         with:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
