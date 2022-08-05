@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 15.12.0
 
-      - uses: actions/cache@0865c47f36e68161719c5b124609996bb5c40129 # tag=v3.0.5
+      - uses: actions/cache@f4278025ab0f432ce369118909e46deec636f50c # tag=v3.0.6
         with:
           path: node_modules
           key: npm-${{ hashFiles('package-lock.json') }}
