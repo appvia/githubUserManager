@@ -5,6 +5,9 @@ export const config = {
   get removeUsers(): boolean {
     return process.env.REMOVE_USERS?.toLowerCase() === 'true'
   },
+  get maxRemoveUsers(): number{
+    return parseInt(process.env.MAX_REMOVE_USERS ?? '0' ) || 100
+  },
   get exitCodeOnMissmatch(): number {
     return parseInt(process.env.EXIT_CODE_ON_MISMATCH ?? '0') || 0
   },

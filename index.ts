@@ -19,7 +19,14 @@ export async function run(): Promise<void> {
 
   if (usersNotInGoogle.size > 0) {
     console.log(`Users not in google: ${Array.from(usersNotInGoogle).join(', ')}`)
-    if (config.removeUsers) await removeUsersFromGitHubOrg(usersNotInGoogle)
+
+    if (config.removeUsers) {
+      if (usersNotInGithub.size <= config.maxRemoveUsers) {
+        await removeUsersFromGitHubOrg(usersNotInGoogle)
+      } else {
+        console.log(`Not removing users because there are too many`)
+      }
+    }
   }
 
   const exitCode = usersNotInGoogle.size > 0 || usersNotInGithub.size > 0 ? config.exitCodeOnMissmatch : 0
