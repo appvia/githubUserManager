@@ -20,6 +20,6 @@ jobs:
           github-app-id: 241656
           github-installation-id: 29614836
           github-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          ignored-users: null
+          ignored-users: ''
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-actor: ${{ github.actor }}
