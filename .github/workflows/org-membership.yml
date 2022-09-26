@@ -1,0 +1,25 @@
+# ./.github/workflows/org-membership.yml
+name: Github Org Membership
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Org Membership Manager
+        uses: appvia/githubUserManager@v1.0.5
+        with:
+          google-email-address: hello@example.com
+          google-credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
+          add-users: 'false'
+          remove-users: 'false'
+          exit-code-on-missmatch: '1'
+          github-org: 'ArizenHQ'
+          github-app-id: 241656
+          github-installation-id: 29614836
+          github-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+          ignored-users: null
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-actor: ${{ github.actor }}
