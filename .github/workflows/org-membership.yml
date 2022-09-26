@@ -11,14 +11,14 @@ jobs:
       - name: Github Org Membership Manager
         uses: appvia/githubUserManager@v1.0.5
         with:
-          google-email-address: hello@example.com
+          google-email-address: alex@coinhouse.com
           google-credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
           add-users: 'false'
           remove-users: 'false'
           exit-code-on-missmatch: '1'
           github-org: 'ArizenHQ'
-          github-app-id: 241656
-          github-installation-id: 29614836
+          github-app-id: ${{ secrets.GH_APP_ID }}
+          github-installation-id: ${{ secrets.GH_INSTALLATION_ID }}
           github-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
           ignored-users: ''
           github-token: ${{ secrets.GITHUB_TOKEN }}
