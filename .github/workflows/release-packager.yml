@@ -1,0 +1,40 @@
+name: Node.js Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create tag artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.ref_name}}
+          path: Release
+      - name: Copy Repo Files
+        uses: actions/checkout@master
+
+      #This Action Emits 2 Variables, IMAGE_SHA_NAME and IMAGE_URL 
+      #which you can reference in subsequent steps
+      - name: Publish Docker Image to GPR
+        uses: machine-learning-apps/gpr-docker-publish@master
+        id: docker
+        with:
+          IMAGE_NAME: 'githubusermanager'
+          TAG: ${{github.ref_name}}
+          DOCKERFILE_PATH: 'Dockerfile'
+          BUILD_CONTEXT: '/'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GOOGLE_EMAIL_ADDRESS: ${{ inputs.google-email-address }}
+          GOOGLE_CREDENTIALS: ${{ inputs.google-credentials }}
+          ADD_USERS: ${{ inputs.add-users }}
+          REMOVE_USERS: ${{ inputs.remove-users }}
+          EXIT_CODE_ON_MISMATCH: ${{ inputs.exit-code-on-missmatch }}
+          GITHUB_ORG: ${{ inputs.github-org }}
+          GITHUB_APP_ID: ${{ inputs.github-app-id }}
+          GITHUB_INSTALLATION_ID: ${{ inputs.github-installation-id }}
+          GITHUB_PRIVATE_KEY: ${{ inputs.github-private-key }}
+          IGNORED_USERS: ${{ inputs.ignored-users }}
