@@ -34,6 +34,7 @@ export async function getGithubUsersFromGithub(): Promise<Set<string>> {
   return new Set([...githubAccounts, ...pendingGithubAccounts])
 }
 
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function formatUserList(users): Set<string> {
   return new Set(

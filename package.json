@@ -9,7 +9,7 @@
     "lint-fix": "eslint --fix .",
     "start": "ts-node index"
   },
-  "author": "Chris Nesbitt-Smith",
+  "author": "Alexandre Ouicher",
   "license": "MIT",
   "devDependencies": {
     "@octokit/types": "7.5.0",
