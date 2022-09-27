@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv'
+dotenv.config()
 import { getGithubUsersFromGoogle } from './src/google'
 import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersFromGitHubOrg } from './src/github'
 import { config } from './src/config'

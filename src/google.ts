@@ -31,8 +31,8 @@ export async function getGithubUsersFromGoogle(): Promise<Set<string>> {
     customer: 'my_customer',
     maxResults: 250,
     projection: 'custom',
-    fields: 'users(customSchemas/Accounts/github(value))',
-    customFieldMask: 'Accounts',
+    fields: 'users(customSchemas/Tech/github(value))',
+    customFieldMask: 'Tech',
   })
 
   const githubAccounts = mod.formatUserList(userList.data.users)
