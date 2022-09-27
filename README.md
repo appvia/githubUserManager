@@ -19,7 +19,7 @@ Right now this only handles the organization membership, it **does not** touch t
 
     1. Go to https://admin.google.com/ac/customschema
     1. Enter
-       - Category: `Accounts`
+       - Category: `Tech`
        - Description: `Accounts held elsewhere to link in`
        - Custom fields:
          - name: `github`
@@ -32,7 +32,7 @@ Right now this only handles the organization membership, it **does not** touch t
     1.  Go to https://admin.google.com/ac/users
     1.  Click a user to edit them
     1.  Click 'user information'
-    1.  Under Accounts, click `github`
+    1.  Under Tech, click `github`
     1.  Add all the github accounts for that user
     1.  Click Save
 

@@ -3,15 +3,15 @@ import { google } from 'googleapis'
 import * as mod from '../src/google'
 
 const fakeUsersResponse = [
-  { customSchemas: { Accounts: { github: [{ value: 'chrisns' }] } } },
+  { customSchemas: { Tech: { github: [{ value: 'chrisns' }] } } },
   {
     customSchemas: {
-      Accounts: { github: [{ value: 'Foo' }, , { value: 'tar' }] },
+      Tech: { github: [{ value: 'Foo' }, , { value: 'tar' }] },
     },
   },
   {
     customSchemas: {
-      Accounts: { github: [{ value: 'foo' }, { value: 'bar' }] },
+      Tech: { github: [{ value: 'foo' }, { value: 'bar' }] },
     },
   },
 ]
@@ -51,10 +51,10 @@ describe('google integration', () => {
       mod.formatUserList([
         {},
         { customSchemas: {} },
-        { customSchemas: { Accounts: {} } },
-        { customSchemas: { Accounts: { github: [] } } },
-        { customSchemas: { Accounts: { github: [{}] } } },
-        { customSchemas: { Accounts: { github: [{ value: 'chrisns' }] } } },
+        { customSchemas: { Tech: {} } },
+        { customSchemas: { Tech: { github: [] } } },
+        { customSchemas: { Tech: { github: [{}] } } },
+        { customSchemas: { Tech: { github: [{ value: 'chrisns' }] } } },
       ]),
     ).toMatchSnapshot())
 })
