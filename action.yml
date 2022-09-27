@@ -63,7 +63,7 @@ runs:
         -e GITHUB_INSTALLATION_ID="$GITHUB_INSTALLATION_ID" \
         -e GITHUB_PRIVATE_KEY="$GITHUB_PRIVATE_KEY" \
         -e IGNORED_USERS="$IGNORED_USERS" \
-        docker.pkg.github.com/appvia/githubusermanager/githubusermanager:v1.0.5
+        docker.pkg.github.com/ArizenHQ/githubusermanager/githubusermanager:v2.0
       shell: bash
       env:
         GOOGLE_EMAIL_ADDRESS: ${{ inputs.google-email-address }}
