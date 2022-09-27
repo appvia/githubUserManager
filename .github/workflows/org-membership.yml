@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Github Org Membership Manager
-        uses: ArizenHQ/githubUserManager@v1.0.5
+        uses: ArizenHQ/githubUserManager@v1.0
         with:
           google-email-address: alex@coinhouse.com
           google-credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
