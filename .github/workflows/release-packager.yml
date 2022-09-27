@@ -2,7 +2,7 @@ name: Release Packager
 
 on:
   release:
-    types: [created]
+    types: [created,published]
 
 jobs:
   build:
