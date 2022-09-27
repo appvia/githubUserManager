@@ -1,6 +1,6 @@
 {
   "name": "githubusermanager",
-  "version": "1.0.0",
+  "version": "1.0.0-canary.0",
   "description": "1.  [Add a custom attribute on the users](https://support.google.com/a/answer/6208725?hl=en#zippy=%2Cadd-a-new-custom-attribute)",
   "main": "index.js",
   "scripts": {
