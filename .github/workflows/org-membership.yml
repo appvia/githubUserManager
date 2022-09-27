@@ -16,7 +16,7 @@ jobs:
           add-users: 'false'
           remove-users: 'false'
           exit-code-on-missmatch: '1'
-          github-org: 'ArizenHQ'
+          github-org: ${{ secrets.GH_ORGA }}
           github-app-id: ${{ secrets.GH_APP_ID }}
           github-installation-id: ${{ secrets.GH_INSTALLATION_ID }}
           github-private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
