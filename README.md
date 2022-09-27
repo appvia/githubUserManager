@@ -1,15 +1,16 @@
 # Manage github organisation membership with Google Workspace user accounts
 
-[![Known Vulnerabilities](https://snyk.io/test/github/appvia/githubUserManager/badge.svg)](https://snyk.io/test/github/appvia/githubUserManager)
-[![GitHub license](https://img.shields.io/github/license/appvia/githubUserManager)](https://github.com/appvia/githubUserManager/blob/main/LICENSE)
+[![Known Vulnerabilities](https://snyk.io/test/github/appvia/githubusermanager/badge.svg)](https://snyk.io/test/github/appvia/githubusermanager)
+[![GitHub license](https://img.shields.io/github/license/appvia/githubusermanager)](https://github.com/appvia/githubusermanager/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/appvia/githubusermanager)](https://github.com/appvia/githubusermanager/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/appvia/githubusermanager)](https://github.com/appvia/githubusermanager/network)
 [![GitHub issues](https://img.shields.io/github/issues/appvia/githubusermanager)](https://github.com/appvia/githubusermanager/issues)
-[![ci](https://github.com/appvia/githubUserManager/actions/workflows/ci.yml/badge.svg)](https://github.com/appvia/githubUserManager/actions/workflows/ci.yml)
+[![ci](https://github.com/appvia/githubusermanager/actions/workflows/ci.yml/badge.svg)](https://github.com/appvia/githubusermanager/actions/workflows/ci.yml)
 
 Manages who is in your GitHub organization based on a custom property in their Google Workspace profile, allowing for seamless JML (Joiner mover leaver) process, if allowed removing/disabling an account in the Google Workspace will remove the user from the GitHub; similarly adding a user also works the same way. If you don't want to run it in destructive mode it can be configured to exit with a non-zero exit code so that you know to go and manually make the changes.
 
 Right now this only handles the organization membership, it **does not** touch team membership, or level of membership; the main focus is to draw alert when the configuration isn't as expected, these features could be added in future.
+
 
 ## Deployment
 
@@ -93,7 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Github Org Membership Manager
-        uses: appvia/githubUserManager@v1.0.5
+        uses: ArizenHQ/githubusermanager@v1.0.5
         with:
           google-email-address: hello@example.com
           google-credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
