@@ -32,7 +32,7 @@ jobs:
       - run: npm run test
 
       - id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@69f6fc9d46f2f8bf0d5491e4aabe0bb8c6a4678a # tag=v4.0.1
+        uses: crazy-max/ghaction-docker-meta@12cce9efe0d49980455aaaca9b071c0befcdd702 # tag=v4.1.0
         with:
           images: docker.pkg.github.com/appvia/githubUserManager/githubUserManager
           tag-sha: true
