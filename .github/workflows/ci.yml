@@ -34,16 +34,16 @@ jobs:
       - id: docker_meta
         uses: crazy-max/ghaction-docker-meta@57396166ad8aefe6098280995947635806a0e6ea # tag=v4.1.1
         with:
-          images: docker.pkg.github.com/appvia/githubUserManager/githubUserManager
+          images: docker.pkg.github.com/reMarkable/githubUserManager/githubUserManager
           tag-sha: true
           tag-latest: true
           tag-semver: |
             {{version}}
           label-custom: |
-            org.opencontainers.image.vendor=appvia
-            org.opencontainers.image.documentation=https://github.com/appvia/githubUserManager
-            org.opencontainers.image.authors=Chris Nesbitt-Smith <chris.nesbitt-smith@appvia.io>
-            maintainer=appvia
+            org.opencontainers.image.vendor=reMarkable
+            org.opencontainers.image.documentation=https://github.com/reMarkable/githubUserManager
+            org.opencontainers.image.authors=Marcus Ramberg <marcus.ramberg@remarkable.com>
+            maintainer=reMarkable
 
       - name: Login to docker registry
         if: ${{ github.event_name != 'pull_request' }}
