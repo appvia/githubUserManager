@@ -34,7 +34,7 @@ jobs:
       - id: docker_meta
         uses: crazy-max/ghaction-docker-meta@57396166ad8aefe6098280995947635806a0e6ea # tag=v4.1.1
         with:
-          images: docker.pkg.github.com/reMarkable/githubUserManager/githubUserManager
+          images: docker.pkg.github.com/remarkable/githubUserManager/githubUserManager
           tag-sha: true
           tag-latest: true
           tag-semver: |
