@@ -1,4 +1,4 @@
-FROM node:19.1.0-alpine@sha256:27b073eb613d3700018c8d457b99a0ccaad1241ee0a22f7fc64fd0ab4f9de201
+FROM node:19.1.0-alpine@sha256:6c9b6a06142b5e91444350657d21747907ab8b84831d0ea18e6528e74524e532
 
 WORKDIR /app
 COPY package.json package-lock.json ./
