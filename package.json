@@ -12,7 +12,7 @@
   "author": "Chris Nesbitt-Smith",
   "license": "MIT",
   "devDependencies": {
-    "@octokit/types": "8.1.0",
+    "@octokit/types": "8.1.1",
     "@types/jest": "28.1.8",
     "@typescript-eslint/eslint-plugin": "5.48.1",
     "@typescript-eslint/parser": "5.48.1",
