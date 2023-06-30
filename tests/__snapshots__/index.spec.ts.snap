@@ -51,10 +51,10 @@ exports[`missmatch should have consistent console output 1`] = `
       "Users from github: b, c, a",
     ],
     Array [
-      "Users not in github: d",
+      "Users not in google: b, c",
     ],
     Array [
-      "Users not in google: b, c",
+      "Users not in github: d",
     ],
   ],
   "results": Array [
@@ -88,10 +88,10 @@ exports[`missmatch should have consistent console output with full destructive m
       "Users from github: b, c, a",
     ],
     Array [
-      "Users not in github: d",
+      "Users not in google: b, c",
     ],
     Array [
-      "Users not in google: b, c",
+      "Users not in github: d",
     ],
   ],
   "results": Array [

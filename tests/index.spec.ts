@@ -4,8 +4,8 @@ import * as google from '../src/google'
 import * as github from '../src/github'
 import * as mod from '../index'
 
-let processExitSpy
-let consoleSpy
+let processExitSpy: jest.SpyInstance
+let consoleSpy: jest.SpyInstance
 
 beforeEach(() => {
   processExitSpy = jest.spyOn(global.process, 'exit').mockImplementation(() => {
