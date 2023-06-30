@@ -12,11 +12,6 @@ export async function run(): Promise<void> {
   const usersNotInGithub = new Set(Array.from(googleUsers).filter((x) => !gitHubUsers.has(x)))
 
   const usersNotInGoogle = new Set(Array.from(gitHubUsers).filter((x) => !googleUsers.has(x)))
-  if (usersNotInGithub.size > 0) {
-    console.log(`Users not in github: ${Array.from(usersNotInGithub).join(', ')}`)
-    if (config.addUsers) await addUsersToGitHubOrg(usersNotInGithub)
-  }
-
   if (usersNotInGoogle.size > 0) {
     console.log(`Users not in google: ${Array.from(usersNotInGoogle).join(', ')}`)
 
@@ -27,6 +22,11 @@ export async function run(): Promise<void> {
         console.log(`Not removing users because there are too many`)
       }
     }
+  }
+
+  if (usersNotInGithub.size > 0) {
+    console.log(`Users not in github: ${Array.from(usersNotInGithub).join(', ')}`)
+    if (config.addUsers) await addUsersToGitHubOrg(usersNotInGithub)
   }
 
   const exitCode = usersNotInGoogle.size > 0 || usersNotInGithub.size > 0 ? config.exitCodeOnMissmatch : 0
