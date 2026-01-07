@@ -1,5 +1,5 @@
 import { getGithubUsersFromGoogle } from './src/google'
-import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersFromGitHubOrg } from './src/github'
+import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersFromGitHubOrg, OperationError } from './src/github'
 import { config } from './src/config'
 
 export async function run(): Promise<void> {
@@ -13,11 +13,15 @@ export async function run(): Promise<void> {
 
   const usersNotInGoogle = new Set(Array.from(gitHubUsers).filter((x) => !googleUsers.has(x)))
   let unfixedMismatch = false
+  const allErrors: OperationError[] = []
 
   if (usersNotInGithub.size > 0) {
     console.log(`Users not in github: ${Array.from(usersNotInGithub).join(', ')}`)
     if (config.addUsers) {
-      await addUsersToGitHubOrg(usersNotInGithub)
+      const result = await addUsersToGitHubOrg(usersNotInGithub)
+      if (result.errors.length > 0) {
+        allErrors.push(...result.errors)
+      }
     } else {
       unfixedMismatch = true
     }
@@ -26,13 +30,25 @@ export async function run(): Promise<void> {
   if (usersNotInGoogle.size > 0) {
     console.log(`Users not in google: ${Array.from(usersNotInGoogle).join(', ')}`)
     if (config.removeUsers) {
-      await removeUsersFromGitHubOrg(usersNotInGoogle)
+      const result = await removeUsersFromGitHubOrg(usersNotInGoogle)
+      if (result.errors.length > 0) {
+        allErrors.push(...result.errors)
+      }
     } else {
       unfixedMismatch = true
     }
   }
 
-  const exitCode = unfixedMismatch ? config.exitCodeOnMissmatch : 0
+  if (allErrors.length > 0) {
+    console.error(`\n--- ERRORS SUMMARY ---`)
+    for (const err of allErrors) {
+      console.error(`[${err.operation.toUpperCase()}] ${err.user}: ${err.message}`)
+    }
+    console.error(`Total errors: ${allErrors.length}`)
+  }
+
+  const hasErrors = allErrors.length > 0
+  const exitCode = unfixedMismatch || hasErrors ? config.exitCodeOnMissmatch : 0
 
   process.exit(exitCode)
 }

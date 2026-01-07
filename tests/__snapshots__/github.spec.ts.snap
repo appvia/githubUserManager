@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`github integration addUserToGitHubOrg 1`] = `
+exports[`github integration addUserToGitHubOrg success 1`] = `
 [MockFunction] {
   "calls": Array [
     Array [
@@ -11,29 +11,6 @@ exports[`github integration addUserToGitHubOrg 1`] = `
     ],
   ],
   "results": Array [
-    Object {
-      "type": "return",
-      "value": Promise {},
-    },
-  ],
-}
-`;
-
-exports[`github integration addUsersToGitHubOrg 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "foo",
-    ],
-    Array [
-      "bar",
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": Promise {},
-    },
     Object {
       "type": "return",
       "value": Promise {},
@@ -79,7 +56,7 @@ exports[`github integration getUserIdFromUsername found 1`] = `123`;
 
 exports[`github integration getUserIdFromUsername notfound 1`] = `"Unable to find user id for foo"`;
 
-exports[`github integration removeUserFromGitHubOrg 1`] = `
+exports[`github integration removeUserFromGitHubOrg success 1`] = `
 [MockFunction] {
   "calls": Array [
     Array [
@@ -90,29 +67,6 @@ exports[`github integration removeUserFromGitHubOrg 1`] = `
     ],
   ],
   "results": Array [
-    Object {
-      "type": "return",
-      "value": Promise {},
-    },
-  ],
-}
-`;
-
-exports[`github integration removeUsersFromGitHubOrg 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "foo",
-    ],
-    Array [
-      "bar",
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": Promise {},
-    },
     Object {
       "type": "return",
       "value": Promise {},
