@@ -3,17 +3,28 @@ import { google } from 'googleapis'
 import * as mod from '../src/google'
 
 const fakeUsersResponse = [
-  { customSchemas: { Accounts: { github: [{ value: 'chrisns' }] } } },
+  { customSchemas: { Accounts: { github: [{ value: 'chrisns' }] } }, suspended: false, archived: false },
   {
     customSchemas: {
       Accounts: { github: [{ value: 'Foo' }, , { value: 'tar' }] },
     },
+    suspended: false,
+    archived: false,
   },
   {
     customSchemas: {
       Accounts: { github: [{ value: 'foo' }, { value: 'bar' }] },
     },
+    suspended: false,
+    archived: false,
   },
+]
+
+const fakeUsersResponseWithSuspended = [
+  { customSchemas: { Accounts: { github: [{ value: 'activeuser' }] } }, suspended: false, archived: false },
+  { customSchemas: { Accounts: { github: [{ value: 'suspendeduser' }] } }, suspended: true, archived: false },
+  { customSchemas: { Accounts: { github: [{ value: 'archiveduser' }] } }, suspended: false, archived: true },
+  { customSchemas: { Accounts: { github: [{ value: 'botharchivedandsuspended' }] } }, suspended: true, archived: true },
 ]
 
 describe('google integration', () => {
@@ -49,12 +60,26 @@ describe('google integration', () => {
   it('formatUserList bad', () =>
     expect(
       mod.formatUserList([
-        {},
-        { customSchemas: {} },
-        { customSchemas: { Accounts: {} } },
-        { customSchemas: { Accounts: { github: [] } } },
-        { customSchemas: { Accounts: { github: [{}] } } },
-        { customSchemas: { Accounts: { github: [{ value: 'chrisns' }] } } },
+        { suspended: false, archived: false },
+        { customSchemas: {}, suspended: false, archived: false },
+        { customSchemas: { Accounts: {} }, suspended: false, archived: false },
+        { customSchemas: { Accounts: { github: [] } }, suspended: false, archived: false },
+        { customSchemas: { Accounts: { github: [{}] } }, suspended: false, archived: false },
+        { customSchemas: { Accounts: { github: [{ value: 'chrisns' }] } }, suspended: false, archived: false },
       ]),
     ).toMatchSnapshot())
+
+  it('formatUserList filters out suspended users', () => {
+    const result = mod.formatUserList(fakeUsersResponseWithSuspended)
+    expect(result).toEqual(new Set(['activeuser']))
+  })
+
+  it('formatUserList filters out archived users', () => {
+    const users = [
+      { customSchemas: { Accounts: { github: [{ value: 'active' }] } }, suspended: false, archived: false },
+      { customSchemas: { Accounts: { github: [{ value: 'archived' }] } }, suspended: false, archived: true },
+    ]
+    const result = mod.formatUserList(users)
+    expect(result).toEqual(new Set(['active']))
+  })
 })
