@@ -41,6 +41,21 @@ inputs:
   github-actor:
     description: github actor to use to pull the docker image github.actor is probably fine
     required: true
+  slack-webhook-url:
+    description: 'Slack webhook URL for notifications'
+    required: false
+  slack-notify-on-error:
+    description: 'Send Slack notification when errors occur (default: true)'
+    required: false
+    default: 'true'
+  slack-notify-on-change:
+    description: 'Send Slack notification when membership changes are made'
+    required: false
+    default: 'false'
+  slack-notify-always:
+    description: 'Always send Slack notification regardless of changes'
+    required: false
+    default: 'false'
 runs:
   using: "composite"
   steps:
@@ -63,6 +78,10 @@ runs:
         -e GITHUB_INSTALLATION_ID="$GITHUB_INSTALLATION_ID" \
         -e GITHUB_PRIVATE_KEY="$GITHUB_PRIVATE_KEY" \
         -e IGNORED_USERS="$IGNORED_USERS" \
+        -e SLACK_WEBHOOK_URL="$SLACK_WEBHOOK_URL" \
+        -e SLACK_NOTIFY_ON_ERROR="$SLACK_NOTIFY_ON_ERROR" \
+        -e SLACK_NOTIFY_ON_CHANGE="$SLACK_NOTIFY_ON_CHANGE" \
+        -e SLACK_NOTIFY_ALWAYS="$SLACK_NOTIFY_ALWAYS" \
         docker.pkg.github.com/appvia/githubusermanager/githubusermanager:v1.0.5
       shell: bash
       env:
@@ -76,4 +95,8 @@ runs:
         GITHUB_INSTALLATION_ID: ${{ inputs.github-installation-id }}
         GITHUB_PRIVATE_KEY: ${{ inputs.github-private-key }}
         IGNORED_USERS: ${{ inputs.ignored-users }}
+        SLACK_WEBHOOK_URL: ${{ inputs.slack-webhook-url }}
+        SLACK_NOTIFY_ON_ERROR: ${{ inputs.slack-notify-on-error }}
+        SLACK_NOTIFY_ON_CHANGE: ${{ inputs.slack-notify-on-change }}
+        SLACK_NOTIFY_ALWAYS: ${{ inputs.slack-notify-always }}
 

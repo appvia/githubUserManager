@@ -1,7 +1,9 @@
 jest.mock('../src/google')
 jest.mock('../src/github')
+jest.mock('../src/slack')
 import * as google from '../src/google'
 import * as github from '../src/github'
+import * as slack from '../src/slack'
 import * as mod from '../index'
 
 let processExitSpy
