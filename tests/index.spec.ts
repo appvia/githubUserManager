@@ -30,8 +30,24 @@ describe('missmatch', () => {
     await mod.run()
     return expect(processExitSpy).toBeCalledWith(0)
   })
-  it('should exit with 122 if defined when there is a missmatch', async () => {
+  it('should exit with 122 if defined when there is an unfixed missmatch', async () => {
     process.env.EXIT_CODE_ON_MISMATCH = '122'
+    delete process.env.ADD_USERS
+    delete process.env.REMOVE_USERS
+    await mod.run()
+    return expect(processExitSpy).toBeCalledWith(122)
+  })
+  it('should exit with 0 when mismatch is fixed by adding users', async () => {
+    process.env.EXIT_CODE_ON_MISMATCH = '122'
+    process.env.ADD_USERS = 'true'
+    process.env.REMOVE_USERS = 'true'
+    await mod.run()
+    return expect(processExitSpy).toBeCalledWith(0)
+  })
+  it('should exit with 122 when only add is enabled but remove mismatch exists', async () => {
+    process.env.EXIT_CODE_ON_MISMATCH = '122'
+    process.env.ADD_USERS = 'true'
+    delete process.env.REMOVE_USERS
     await mod.run()
     return expect(processExitSpy).toBeCalledWith(122)
   })

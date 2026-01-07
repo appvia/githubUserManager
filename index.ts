@@ -12,17 +12,27 @@ export async function run(): Promise<void> {
   const usersNotInGithub = new Set(Array.from(googleUsers).filter((x) => !gitHubUsers.has(x)))
 
   const usersNotInGoogle = new Set(Array.from(gitHubUsers).filter((x) => !googleUsers.has(x)))
+  let unfixedMismatch = false
+
   if (usersNotInGithub.size > 0) {
     console.log(`Users not in github: ${Array.from(usersNotInGithub).join(', ')}`)
-    if (config.addUsers) await addUsersToGitHubOrg(usersNotInGithub)
+    if (config.addUsers) {
+      await addUsersToGitHubOrg(usersNotInGithub)
+    } else {
+      unfixedMismatch = true
+    }
   }
 
   if (usersNotInGoogle.size > 0) {
     console.log(`Users not in google: ${Array.from(usersNotInGoogle).join(', ')}`)
-    if (config.removeUsers) await removeUsersFromGitHubOrg(usersNotInGoogle)
+    if (config.removeUsers) {
+      await removeUsersFromGitHubOrg(usersNotInGoogle)
+    } else {
+      unfixedMismatch = true
+    }
   }
 
-  const exitCode = usersNotInGoogle.size > 0 || usersNotInGithub.size > 0 ? config.exitCodeOnMissmatch : 0
+  const exitCode = unfixedMismatch ? config.exitCodeOnMissmatch : 0
 
   process.exit(exitCode)
 }
