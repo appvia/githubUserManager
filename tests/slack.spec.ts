@@ -5,11 +5,10 @@ import * as mod from '../src/slack'
 import { EventEmitter } from 'events'
 
 describe('slack integration', () => {
-  let consoleSpy: jest.SpyInstance
   let consoleErrorSpy: jest.SpyInstance
 
   beforeEach(() => {
-    consoleSpy = jest.spyOn(global.console, 'log').mockImplementation()
+    jest.spyOn(global.console, 'log').mockImplementation()
     consoleErrorSpy = jest.spyOn(global.console, 'error').mockImplementation()
   })
 
@@ -26,9 +25,11 @@ describe('slack integration', () => {
 
     it('sends notification when webhook URL is configured', async () => {
       jest.spyOn(config, 'slackWebhookUrl', 'get').mockReturnValue('https://hooks.slack.com/services/test')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockReq = new EventEmitter() as any
       mockReq.write = jest.fn()
       mockReq.end = jest.fn()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockRes = new EventEmitter() as any
       mockRes.statusCode = 200
       ;(https.request as jest.Mock).mockImplementation((options, callback) => {
@@ -41,9 +42,11 @@ describe('slack integration', () => {
 
     it('returns false when request fails with non-200', async () => {
       jest.spyOn(config, 'slackWebhookUrl', 'get').mockReturnValue('https://hooks.slack.com/services/test')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockReq = new EventEmitter() as any
       mockReq.write = jest.fn()
       mockReq.end = jest.fn()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockRes = new EventEmitter() as any
       mockRes.statusCode = 500
       ;(https.request as jest.Mock).mockImplementation((options, callback) => {
@@ -57,6 +60,7 @@ describe('slack integration', () => {
 
     it('returns false when request errors', async () => {
       jest.spyOn(config, 'slackWebhookUrl', 'get').mockReturnValue('https://hooks.slack.com/services/test')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockReq = new EventEmitter() as any
       mockReq.write = jest.fn()
       mockReq.end = jest.fn()
@@ -98,14 +102,17 @@ describe('slack integration', () => {
   })
 
   describe('notifySlack', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let mockReq: any
 
     beforeEach(() => {
       jest.spyOn(config, 'slackWebhookUrl', 'get').mockReturnValue('https://hooks.slack.com/services/test')
       jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       mockReq = new EventEmitter() as any
       mockReq.write = jest.fn()
       mockReq.end = jest.fn()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mockRes = new EventEmitter() as any
       mockRes.statusCode = 200
       ;(https.request as jest.Mock).mockImplementation((options, callback) => {
