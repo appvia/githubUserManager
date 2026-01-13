@@ -35,7 +35,7 @@ exports[`missmatch should add users if set to 1`] = `
   "results": Array [
     Object {
       "type": "return",
-      "value": undefined,
+      "value": Promise {},
     },
   ],
 }
@@ -128,7 +128,7 @@ exports[`missmatch should remove users if set to 1`] = `
   "results": Array [
     Object {
       "type": "return",
-      "value": undefined,
+      "value": Promise {},
     },
   ],
 }

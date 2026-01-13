@@ -29,6 +29,18 @@ export const config = {
   get googleEmailAddress(): string {
     return process.env.GOOGLE_EMAIL_ADDRESS ?? ''
   },
+  get slackWebhookUrl(): string | undefined {
+    return process.env.SLACK_WEBHOOK_URL
+  },
+  get slackNotifyOnError(): boolean {
+    return process.env.SLACK_NOTIFY_ON_ERROR?.toLowerCase() !== 'false'
+  },
+  get slackNotifyOnChange(): boolean {
+    return process.env.SLACK_NOTIFY_ON_CHANGE?.toLowerCase() === 'true'
+  },
+  get slackNotifyAlways(): boolean {
+    return process.env.SLACK_NOTIFY_ALWAYS?.toLowerCase() === 'true'
+  },
 }
 
 export interface googleCredentials {

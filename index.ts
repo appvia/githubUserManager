@@ -1,6 +1,7 @@
 import { getGithubUsersFromGoogle } from './src/google'
-import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersFromGitHubOrg } from './src/github'
+import { getGithubUsersFromGithub, addUsersToGitHubOrg, removeUsersFromGitHubOrg, OperationError } from './src/github'
 import { config } from './src/config'
+import { notifySlack } from './src/slack'
 
 export async function run(): Promise<void> {
   const googleUsers = await getGithubUsersFromGoogle()
@@ -12,17 +13,49 @@ export async function run(): Promise<void> {
   const usersNotInGithub = new Set(Array.from(googleUsers).filter((x) => !gitHubUsers.has(x)))
 
   const usersNotInGoogle = new Set(Array.from(gitHubUsers).filter((x) => !googleUsers.has(x)))
+  let unfixedMismatch = false
+  const allErrors: OperationError[] = []
+  const addedUsers: string[] = []
+  const removedUsers: string[] = []
+
   if (usersNotInGithub.size > 0) {
     console.log(`Users not in github: ${Array.from(usersNotInGithub).join(', ')}`)
-    if (config.addUsers) await addUsersToGitHubOrg(usersNotInGithub)
+    if (config.addUsers) {
+      const result = await addUsersToGitHubOrg(usersNotInGithub)
+      addedUsers.push(...result.success)
+      if (result.errors.length > 0) {
+        allErrors.push(...result.errors)
+      }
+    } else {
+      unfixedMismatch = true
+    }
   }
 
   if (usersNotInGoogle.size > 0) {
     console.log(`Users not in google: ${Array.from(usersNotInGoogle).join(', ')}`)
-    if (config.removeUsers) await removeUsersFromGitHubOrg(usersNotInGoogle)
+    if (config.removeUsers) {
+      const result = await removeUsersFromGitHubOrg(usersNotInGoogle)
+      removedUsers.push(...result.success)
+      if (result.errors.length > 0) {
+        allErrors.push(...result.errors)
+      }
+    } else {
+      unfixedMismatch = true
+    }
   }
 
-  const exitCode = usersNotInGoogle.size > 0 || usersNotInGithub.size > 0 ? config.exitCodeOnMissmatch : 0
+  if (allErrors.length > 0) {
+    console.error(`\n--- ERRORS SUMMARY ---`)
+    for (const err of allErrors) {
+      console.error(`[${err.operation.toUpperCase()}] ${err.user}: ${err.message}`)
+    }
+    console.error(`Total errors: ${allErrors.length}`)
+  }
+
+  await notifySlack(addedUsers, removedUsers, allErrors, config.githubOrg)
+
+  const hasErrors = allErrors.length > 0
+  const exitCode = unfixedMismatch || hasErrors ? config.exitCodeOnMissmatch : 0
 
   process.exit(exitCode)
 }

@@ -31,7 +31,8 @@ export async function getGithubUsersFromGoogle(): Promise<Set<string>> {
     customer: 'my_customer',
     maxResults: 250,
     projection: 'custom',
-    fields: 'users(customSchemas/Accounts/github(value))',
+    query: 'isSuspended=false',
+    fields: 'users(customSchemas/Accounts/github(value),suspended,archived)',
     customFieldMask: 'Accounts',
   })
 
@@ -43,6 +44,7 @@ export async function getGithubUsersFromGoogle(): Promise<Set<string>> {
 export function formatUserList(users): Set<string> {
   return new Set(
     users
+      .filter((user) => !user.suspended && !user.archived)
       .map((user) => user.customSchemas?.Accounts?.github?.map((account) => account.value?.toLowerCase()))
       .flat()
       .filter(Boolean),
