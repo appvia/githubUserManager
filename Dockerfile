@@ -5,4 +5,4 @@ COPY package.json package-lock.json ./
 RUN npm install --production
 COPY . .
 
-CMD cd /app && npm start 
+CMD ["npm", "start"]
