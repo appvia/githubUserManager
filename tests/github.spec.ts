@@ -182,4 +182,48 @@ describe('github integration', () => {
     const response = [{ login: 'chrisns' }, { login: 'chrisns' }, { login: 'foo' }, {}]
     return expect(mod.formatUserList(response)).toEqual(new Set(['chrisns', 'foo']))
   })
+
+  it('formatUserList trims leading and trailing whitespace from logins', () => {
+    const response = [{ login: ' chrisns' }, { login: 'foo ' }, { login: ' bar ' }]
+    return expect(mod.formatUserList(response)).toEqual(new Set(['chrisns', 'foo', 'bar']))
+  })
+
+  it('addUserToGitHubOrg trims whitespace before checking ignored users', () => {
+    jest.spyOn(config, 'ignoredUsers', 'get').mockReturnValue(['foo'])
+    return expect(mod.addUserToGitHubOrg(' foo ')).resolves.toBe(false)
+  })
+
+  it('addUserToGitHubOrg trims whitespace before looking up the username', async () => {
+    const fakeOctokit = {
+      orgs: {
+        createInvitation: jest.fn().mockResolvedValue(true),
+      },
+    }
+    jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
+    const getUserIdSpy = jest.spyOn(mod, 'getUserIdFromUsername').mockResolvedValue(123)
+    // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    const result = await mod.addUserToGitHubOrg(' foo ')
+    expect(result).toBe(true)
+    expect(getUserIdSpy).toHaveBeenCalledWith('foo')
+  })
+
+  it('removeUserFromGitHubOrg trims whitespace before checking ignored users', () => {
+    jest.spyOn(config, 'ignoredUsers', 'get').mockReturnValue(['foo'])
+    return expect(mod.removeUserFromGitHubOrg(' foo ')).resolves.toBe(false)
+  })
+
+  it('removeUserFromGitHubOrg trims whitespace before calling the API', async () => {
+    const fakeOctokit = {
+      orgs: {
+        removeMembershipForUser: jest.fn().mockResolvedValue(true),
+      },
+    }
+    jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
+    // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    const result = await mod.removeUserFromGitHubOrg(' foo ')
+    expect(result).toBe(true)
+    expect(fakeOctokit.orgs.removeMembershipForUser).toHaveBeenCalledWith(expect.objectContaining({ username: 'foo' }))
+  })
 })

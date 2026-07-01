@@ -9,7 +9,11 @@ export const config = {
     return parseInt(process.env.EXIT_CODE_ON_MISMATCH ?? '0') || 0
   },
   get ignoredUsers(): string[] {
-    return process.env.IGNORED_USERS?.toLowerCase().split(',') ?? []
+    return (
+      process.env.IGNORED_USERS?.toLowerCase()
+        .split(',')
+        .map((user) => user.trim()) ?? []
+    )
   },
   get githubPrivateKey(): string {
     return Buffer.from(process.env.GITHUB_PRIVATE_KEY, 'base64').toString('utf-8')

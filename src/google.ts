@@ -45,7 +45,7 @@ export function formatUserList(users): Set<string> {
   return new Set(
     users
       .filter((user) => !user.suspended && !user.archived)
-      .map((user) => user.customSchemas?.Accounts?.github?.map((account) => account.value?.toLowerCase()))
+      .map((user) => user.customSchemas?.Accounts?.github?.map((account) => account.value?.trim().toLowerCase()))
       .flat()
       .filter(Boolean),
   )

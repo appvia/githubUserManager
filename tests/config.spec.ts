@@ -64,6 +64,10 @@ describe('ignoredUsers', () => {
     process.env.IGNORED_USERS = 'user1,user2,user3,USER4'
     expect(mod.config.ignoredUsers).toMatchSnapshot()
   })
+  it('getIgnoredUsers trims whitespace around entries', () => {
+    process.env.IGNORED_USERS = ' user1, user2 ,user3 '
+    expect(mod.config.ignoredUsers).toEqual(['user1', 'user2', 'user3'])
+  })
 })
 
 describe('githubPrivateKey', () => {
