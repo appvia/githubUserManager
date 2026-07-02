@@ -82,4 +82,14 @@ describe('google integration', () => {
     const result = mod.formatUserList(users)
     expect(result).toEqual(new Set(['active']))
   })
+
+  it('formatUserList trims leading and trailing whitespace from handles', () => {
+    const users = [
+      { customSchemas: { Accounts: { github: [{ value: ' chrisns' }] } }, suspended: false, archived: false },
+      { customSchemas: { Accounts: { github: [{ value: 'foo ' }] } }, suspended: false, archived: false },
+      { customSchemas: { Accounts: { github: [{ value: ' bar ' }] } }, suspended: false, archived: false },
+    ]
+    const result = mod.formatUserList(users)
+    expect(result).toEqual(new Set(['chrisns', 'foo', 'bar']))
+  })
 })

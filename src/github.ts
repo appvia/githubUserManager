@@ -49,7 +49,7 @@ export async function getGithubUsersFromGithub(): Promise<Set<string>> {
 export function formatUserList(users): Set<string> {
   return new Set(
     users
-      .map((user) => user.login?.toLowerCase())
+      .map((user) => user.login?.trim().toLowerCase())
       .flat()
       .filter(Boolean),
   )
@@ -83,6 +83,7 @@ export async function addUsersToGitHubOrg(users: Set<string>): Promise<Operation
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function addUserToGitHubOrg(user: string): Promise<{ error: OperationError } | boolean> {
+  user = user.trim()
   const octokit = mod.getAuthenticatedOctokit()
   if (config.ignoredUsers.includes(user.toLowerCase())) {
     console.log(`Ignoring add for ${user}`)
@@ -126,6 +127,7 @@ export async function removeUsersFromGitHubOrg(users: Set<string>): Promise<Oper
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function removeUserFromGitHubOrg(user: string): Promise<{ error: OperationError } | boolean> {
+  user = user.trim()
   const octokit = mod.getAuthenticatedOctokit()
   if (config.ignoredUsers.includes(user.toLowerCase())) {
     console.log(`Ignoring remove for ${user}`)
