@@ -50,7 +50,7 @@ jobs:
 
       - name: Login to docker registry
         if: ${{ github.event_name != 'pull_request' }}
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a # tag=v2.1.0
+        uses: docker/login-action@c99871dec2022cc055c062a10cc1a1310835ceb4 # v4.3.0
         with:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
