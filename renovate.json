@@ -1,7 +1,5 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:recommended"],
   "automerge": true,
   "platformAutomerge": true,
   "pinDigests": true
