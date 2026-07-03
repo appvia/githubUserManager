@@ -1,21 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`match should have consistent console output 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       "Users from google: a, b, c, d",
     ],
-    Array [
+    [
       "Users from github: a, b, c, d",
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
-    Object {
+    {
       "type": "return",
       "value": undefined,
     },
@@ -25,15 +25,15 @@ exports[`match should have consistent console output 1`] = `
 
 exports[`missmatch should add users if set to 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       Set {
         "d",
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": Promise {},
     },
@@ -43,34 +43,34 @@ exports[`missmatch should add users if set to 1`] = `
 
 exports[`missmatch should have consistent console output 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       "Users from google: a, d",
     ],
-    Array [
+    [
       "Users from github: b, c, a",
     ],
-    Array [
+    [
       "Users not in github: d",
     ],
-    Array [
+    [
       "Users not in google: b, c",
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
-    Object {
+    {
       "type": "return",
       "value": undefined,
     },
-    Object {
+    {
       "type": "return",
       "value": undefined,
     },
-    Object {
+    {
       "type": "return",
       "value": undefined,
     },
@@ -80,34 +80,34 @@ exports[`missmatch should have consistent console output 1`] = `
 
 exports[`missmatch should have consistent console output with full destructive mode on 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       "Users from google: a, d",
     ],
-    Array [
+    [
       "Users from github: b, c, a",
     ],
-    Array [
+    [
       "Users not in github: d",
     ],
-    Array [
+    [
       "Users not in google: b, c",
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
-    Object {
+    {
       "type": "return",
       "value": undefined,
     },
-    Object {
+    {
       "type": "return",
       "value": undefined,
     },
-    Object {
+    {
       "type": "return",
       "value": undefined,
     },
@@ -117,16 +117,16 @@ exports[`missmatch should have consistent console output with full destructive m
 
 exports[`missmatch should remove users if set to 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       Set {
         "b",
         "c",
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": Promise {},
     },

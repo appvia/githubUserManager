@@ -16,19 +16,19 @@ export const config = {
     )
   },
   get githubPrivateKey(): string {
-    return Buffer.from(process.env.GITHUB_PRIVATE_KEY, 'base64').toString('utf-8')
+    return Buffer.from(process.env.GITHUB_PRIVATE_KEY ?? '', 'base64').toString('utf-8')
   },
   get githubAppID(): number {
-    return parseInt(process.env.GITHUB_APP_ID)
+    return parseInt(process.env.GITHUB_APP_ID ?? '')
   },
   get githubInstallationID(): number {
-    return parseInt(process.env.GITHUB_INSTALLATION_ID)
+    return parseInt(process.env.GITHUB_INSTALLATION_ID ?? '')
   },
   get githubOrg(): string {
     return process.env.GITHUB_ORG ?? ''
   },
   get googleCredentials(): googleCredentials {
-    return JSON.parse(Buffer.from(process.env.GOOGLE_CREDENTIALS, 'base64').toString('utf-8'))
+    return JSON.parse(Buffer.from(process.env.GOOGLE_CREDENTIALS ?? '', 'base64').toString('utf-8'))
   },
   get googleEmailAddress(): string {
     return process.env.GOOGLE_EMAIL_ADDRESS ?? ''

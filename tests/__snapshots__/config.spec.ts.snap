@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`ignoredUsers getIgnoredUsers empty 1`] = `Array []`;
+exports[`ignoredUsers getIgnoredUsers empty 1`] = `[]`;
 
 exports[`ignoredUsers getIgnoredUsers many 1`] = `
-Array [
+[
   "user1",
   "user2",
   "user3",
@@ -12,7 +12,7 @@ Array [
 `;
 
 exports[`ignoredUsers getIgnoredUsers single 1`] = `
-Array [
+[
   "user1",
 ]
 `;

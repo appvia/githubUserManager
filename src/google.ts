@@ -2,21 +2,18 @@ import { google } from 'googleapis'
 import * as mod from './google'
 import { config } from './config'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function googleAuth() {
   const privatekey = config.googleCredentials
-  const jwtClient = new google.auth.JWT(
-    privatekey.client_email,
-    null,
-    privatekey.private_key,
-    ['https://www.googleapis.com/auth/admin.directory.user.readonly'],
-    config.googleEmailAddress,
-  )
+  const jwtClient = new google.auth.JWT({
+    email: privatekey.client_email,
+    key: privatekey.private_key,
+    scopes: ['https://www.googleapis.com/auth/admin.directory.user.readonly'],
+    subject: config.googleEmailAddress,
+  })
   await jwtClient.authorize()
   return jwtClient
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function getAdminService() {
   return google.admin({
     version: 'directory_v1',
@@ -36,17 +33,26 @@ export async function getGithubUsersFromGoogle(): Promise<Set<string>> {
     customFieldMask: 'Accounts',
   })
 
-  const githubAccounts = mod.formatUserList(userList.data.users)
+  const githubAccounts = mod.formatUserList(userList.data.users ?? [])
   return githubAccounts
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function formatUserList(users): Set<string> {
+interface GoogleDirectoryUser {
+  suspended?: boolean | null
+  archived?: boolean | null
+  customSchemas?: {
+    Accounts?: {
+      github?: { value?: string | null }[]
+    }
+  } | null
+}
+
+export function formatUserList(users: GoogleDirectoryUser[]): Set<string> {
   return new Set(
     users
       .filter((user) => !user.suspended && !user.archived)
       .map((user) => user.customSchemas?.Accounts?.github?.map((account) => account.value?.trim().toLowerCase()))
       .flat()
-      .filter(Boolean),
+      .filter((login): login is string => Boolean(login)),
   )
 }

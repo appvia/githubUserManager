@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`google integration formatUserList 1`] = `
 Set {
@@ -26,19 +26,20 @@ Set {
 
 exports[`google integration googleAuth 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
-      "foo",
-      null,
-      "bar",
-      Array [
-        "https://www.googleapis.com/auth/admin.directory.user.readonly",
-      ],
-      "hello@example.com",
+  "calls": [
+    [
+      {
+        "email": "foo",
+        "key": "bar",
+        "scopes": [
+          "https://www.googleapis.com/auth/admin.directory.user.readonly",
+        ],
+        "subject": "hello@example.com",
+      },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },

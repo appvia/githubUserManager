@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line no-unused-vars
 module.exports = function (w) {
   return {
     files: [
@@ -13,9 +13,7 @@ module.exports = function (w) {
       type: 'node',
     },
     testFramework: 'jest',
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // setup: function (w) {
-    //   // eslint-disable-next-line @typescript-eslint/no-var-requires
     //   require('dotenv').config()
 
     // },

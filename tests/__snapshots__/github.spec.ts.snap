@@ -1,17 +1,17 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`github integration addUserToGitHubOrg success 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
-      Object {
+  "calls": [
+    [
+      {
         "invitee_id": 123,
         "org": "myorg",
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": Promise {},
     },
@@ -21,20 +21,20 @@ exports[`github integration addUserToGitHubOrg success 1`] = `
 
 exports[`github integration getAuthenticatedOctokit 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
-      Object {
-        "auth": Object {
+  "calls": [
+    [
+      {
+        "auth": {
           "appId": 123,
           "installationId": 123,
           "privateKey": "helloworld",
         },
-        "authStrategy": [Function],
+        "authStrategy": [MockFunction],
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
@@ -58,16 +58,16 @@ exports[`github integration getUserIdFromUsername notfound 1`] = `"Unable to fin
 
 exports[`github integration removeUserFromGitHubOrg success 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
-      Object {
+  "calls": [
+    [
+      {
         "org": "myorg",
         "username": "foo",
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": Promise {},
     },

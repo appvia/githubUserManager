@@ -1,5 +1,4 @@
-import { createAppAuth } from '@octokit/auth-app'
-import { Octokit } from '@octokit/rest'
+import type { Octokit } from '@octokit/rest'
 import * as mod from './github'
 import { config } from './config'
 
@@ -15,7 +14,10 @@ export interface OperationResult {
   errors: OperationError[]
 }
 
-export function getAuthenticatedOctokit(): Octokit {
+// @octokit/rest and @octokit/auth-app are ESM-only, so they're loaded via dynamic import to stay usable from this CommonJS project
+export async function getAuthenticatedOctokit(): Promise<Octokit> {
+  const { Octokit } = await import('@octokit/rest')
+  const { createAppAuth } = await import('@octokit/auth-app')
   return new Octokit({
     authStrategy: createAppAuth,
     auth: {
@@ -27,7 +29,7 @@ export function getAuthenticatedOctokit(): Octokit {
 }
 
 export async function getGithubUsersFromGithub(): Promise<Set<string>> {
-  const octokit = mod.getAuthenticatedOctokit()
+  const octokit = await mod.getAuthenticatedOctokit()
   const members = await octokit.paginate(octokit.orgs.listMembers, {
     org: config.githubOrg,
   })
@@ -45,27 +47,34 @@ export async function getGithubUsersFromGithub(): Promise<Set<string>> {
   return new Set([...githubAccounts, ...pendingGithubAccounts])
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function formatUserList(users): Set<string> {
+export function formatUserList(users: { login?: string | null }[]): Set<string> {
   return new Set(
     users
       .map((user) => user.login?.trim().toLowerCase())
       .flat()
-      .filter(Boolean),
+      .filter((login): login is string => Boolean(login)),
   )
 }
 
 export async function getUserIdFromUsername(username: string): Promise<number> {
-  const octokit = mod.getAuthenticatedOctokit()
+  const octokit = await mod.getAuthenticatedOctokit()
   console.log(`Looking up user ${username}`)
   let user
   try {
     user = await octokit.users.getByUsername({ username })
-  } catch (error) {
+  } catch {
     throw `Unable to find user id for ${username}`
   }
   console.log(`User ${username} userid: ${user.data.id}`)
   return user.data.id
+}
+
+function getErrorDetails(error: unknown): { status?: number; message: string } {
+  const err = error as { status?: number; response?: { status?: number }; message?: string }
+  return {
+    status: err?.status || err?.response?.status,
+    message: err?.message || String(error),
+  }
 }
 
 export async function addUsersToGitHubOrg(users: Set<string>): Promise<OperationResult> {
@@ -81,10 +90,9 @@ export async function addUsersToGitHubOrg(users: Set<string>): Promise<Operation
   return result
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function addUserToGitHubOrg(user: string): Promise<{ error: OperationError } | boolean> {
   user = user.trim()
-  const octokit = mod.getAuthenticatedOctokit()
+  const octokit = await mod.getAuthenticatedOctokit()
   if (config.ignoredUsers.includes(user.toLowerCase())) {
     console.log(`Ignoring add for ${user}`)
     return false
@@ -98,8 +106,8 @@ export async function addUserToGitHubOrg(user: string): Promise<{ error: Operati
     })
     return true
   } catch (error) {
-    const status = error?.status || error?.response?.status
-    let message = error?.message || String(error)
+    const { status } = getErrorDetails(error)
+    let { message } = getErrorDetails(error)
     if (status === 422) {
       message = `Validation failed: ${message} (user may already be invited, or org is at max capacity)`
     } else if (status === 404) {
@@ -125,10 +133,9 @@ export async function removeUsersFromGitHubOrg(users: Set<string>): Promise<Oper
   return result
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function removeUserFromGitHubOrg(user: string): Promise<{ error: OperationError } | boolean> {
   user = user.trim()
-  const octokit = mod.getAuthenticatedOctokit()
+  const octokit = await mod.getAuthenticatedOctokit()
   if (config.ignoredUsers.includes(user.toLowerCase())) {
     console.log(`Ignoring remove for ${user}`)
     return false
@@ -141,8 +148,8 @@ export async function removeUserFromGitHubOrg(user: string): Promise<{ error: Op
     })
     return true
   } catch (error) {
-    const status = error?.status || error?.response?.status
-    let message = error?.message || String(error)
+    const { status } = getErrorDetails(error)
+    let { message } = getErrorDetails(error)
     if (status === 404) {
       message = `User not found or not a member: ${user}`
     } else if (status === 403) {

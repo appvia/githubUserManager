@@ -6,7 +6,8 @@ const fakeUsersResponse = [
   { customSchemas: { Accounts: { github: [{ value: 'chrisns' }] } }, suspended: false, archived: false },
   {
     customSchemas: {
-      Accounts: { github: [{ value: 'Foo' }, , { value: 'tar' }] },
+      // eslint-disable-next-line no-sparse-arrays -- intentionally testing that a hole in the array is tolerated
+      Accounts: { github: [{ value: 'Foo' }, , { value: 'tar' }] as { value?: string }[] },
     },
     suspended: false,
     archived: false,
