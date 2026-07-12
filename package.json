@@ -12,7 +12,7 @@
   "author": "Chris Nesbitt-Smith",
   "license": "MIT",
   "devDependencies": {
-    "@octokit/types": "9.2.3",
+    "@octokit/types": "16.0.0",
     "@types/jest": "28.1.8",
     "@typescript-eslint/eslint-plugin": "5.59.8",
     "@typescript-eslint/parser": "5.59.8",
@@ -24,8 +24,8 @@
     "ts-jest": "28.0.8"
   },
   "dependencies": {
-    "@octokit/auth-app": "^4.0.0",
-    "@octokit/rest": "^19.0.0",
+    "@octokit/auth-app": "^8.0.0",
+    "@octokit/rest": "^22.0.0",
     "googleapis": "^118.0.0",
     "ts-node": "^10.4.0",
     "typescript": "^5.0.0"
