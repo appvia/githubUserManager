@@ -20,5 +20,6 @@ module.exports = {
     '!coverage/**',
     '!jest.config.js',
     '!wallaby.js',
+    '!eslint.config.js',
   ],
 }

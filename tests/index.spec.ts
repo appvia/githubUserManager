@@ -5,9 +5,9 @@ import * as google from '../src/google'
 import * as github from '../src/github'
 import * as mod from '../index'
 
-let processExitSpy
-let consoleSpy
-let consoleErrorSpy
+let processExitSpy: jest.SpyInstance
+let consoleSpy: jest.SpyInstance
+let consoleErrorSpy: jest.SpyInstance
 
 beforeEach(() => {
   processExitSpy = jest.spyOn(global.process, 'exit').mockImplementation(() => {
@@ -35,38 +35,38 @@ describe('missmatch', () => {
 
   it('should exit with 0 by default as there is a missmatch', async () => {
     await mod.run()
-    return expect(processExitSpy).toBeCalledWith(0)
+    return expect(processExitSpy).toHaveBeenCalledWith(0)
   })
   it('should exit with 122 if defined when there is an unfixed missmatch', async () => {
     process.env.EXIT_CODE_ON_MISMATCH = '122'
     delete process.env.ADD_USERS
     delete process.env.REMOVE_USERS
     await mod.run()
-    return expect(processExitSpy).toBeCalledWith(122)
+    return expect(processExitSpy).toHaveBeenCalledWith(122)
   })
   it('should exit with 0 when mismatch is fixed by adding users', async () => {
     process.env.EXIT_CODE_ON_MISMATCH = '122'
     process.env.ADD_USERS = 'true'
     process.env.REMOVE_USERS = 'true'
     await mod.run()
-    return expect(processExitSpy).toBeCalledWith(0)
+    return expect(processExitSpy).toHaveBeenCalledWith(0)
   })
   it('should exit with 122 when only add is enabled but remove mismatch exists', async () => {
     process.env.EXIT_CODE_ON_MISMATCH = '122'
     process.env.ADD_USERS = 'true'
     delete process.env.REMOVE_USERS
     await mod.run()
-    return expect(processExitSpy).toBeCalledWith(122)
+    return expect(processExitSpy).toHaveBeenCalledWith(122)
   })
   it('should not add users if not set to', async () => {
     delete process.env.ADD_USERS
     await mod.run()
-    return expect(github.addUsersToGitHubOrg).not.toBeCalled()
+    return expect(github.addUsersToGitHubOrg).not.toHaveBeenCalled()
   })
   it('should not remove users if not set to', async () => {
     delete process.env.REMOVE_USERS
     await mod.run()
-    return expect(github.removeUsersFromGitHubOrg).not.toBeCalled()
+    return expect(github.removeUsersFromGitHubOrg).not.toHaveBeenCalled()
   })
   it('should add users if set to', async () => {
     process.env.ADD_USERS = 'true'
@@ -99,22 +99,22 @@ describe('match', () => {
   })
   it('should exit with 0 by default', async () => {
     await mod.run()
-    return expect(processExitSpy).toBeCalledWith(0)
+    return expect(processExitSpy).toHaveBeenCalledWith(0)
   })
   it('should not exit with 122 if defined', async () => {
     process.env.EXIT_CODE_ON_MISMATCH = '122'
     await mod.run()
-    return expect(processExitSpy).not.toBeCalledWith(122)
+    return expect(processExitSpy).not.toHaveBeenCalledWith(122)
   })
   it('should not add users', async () => {
     process.env.ADD_USERS = 'true'
     await mod.run()
-    return expect(github.addUsersToGitHubOrg).not.toBeCalled()
+    return expect(github.addUsersToGitHubOrg).not.toHaveBeenCalled()
   })
   it('should not remove users', async () => {
     process.env.REMOVE_USERS = 'true'
     await mod.run()
-    return expect(github.removeUsersFromGitHubOrg).not.toBeCalled()
+    return expect(github.removeUsersFromGitHubOrg).not.toHaveBeenCalled()
   })
 })
 
@@ -136,7 +136,7 @@ describe('error handling', () => {
       errors: [{ user: 'd', operation: 'add', message: 'org full', status: 422 }],
     })
     await mod.run()
-    expect(processExitSpy).toBeCalledWith(1)
+    expect(processExitSpy).toHaveBeenCalledWith(1)
   })
 
   it('should output error summary when errors occur', async () => {

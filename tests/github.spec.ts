@@ -1,4 +1,7 @@
-jest.mock('@octokit/rest')
+// @octokit/rest and @octokit/auth-app are ESM-only, so they're mocked via factories rather than jest.mock's
+// auto-mock (which would `require` the real, ESM-only package and fail outside a jest.config transform for it)
+jest.mock('@octokit/rest', () => ({ Octokit: jest.fn() }))
+jest.mock('@octokit/auth-app', () => ({ createAppAuth: jest.fn() }))
 import { Octokit } from '@octokit/rest'
 import { config } from '../src/config'
 import * as mod from '../src/github'
@@ -12,8 +15,8 @@ describe('github integration', () => {
     jest.spyOn(global.console, 'error').mockImplementation()
   })
 
-  it('getAuthenticatedOctokit', () => {
-    mod.getAuthenticatedOctokit()
+  it('getAuthenticatedOctokit', async () => {
+    await mod.getAuthenticatedOctokit()
     return expect(Octokit).toMatchSnapshot()
   })
   it('getGithubUsersFromGithub', () => {
@@ -25,7 +28,7 @@ describe('github integration', () => {
       orgs: { listMembers: jest.fn(), listPendingInvitations: jest.fn() },
     }
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     expect(mod.getGithubUsersFromGithub()).resolves.toMatchSnapshot()
   })
   it('getUserIdFromUsername found', () => {
@@ -35,7 +38,7 @@ describe('github integration', () => {
       },
     }
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     return expect(mod.getUserIdFromUsername('foo')).resolves.toMatchSnapshot()
   })
 
@@ -46,7 +49,7 @@ describe('github integration', () => {
       },
     }
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     return expect(mod.getUserIdFromUsername('foo')).rejects.toMatchSnapshot()
   })
 
@@ -105,7 +108,7 @@ describe('github integration', () => {
     jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     jest.spyOn(mod, 'getUserIdFromUsername').mockResolvedValue(123)
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     const result = await mod.addUserToGitHubOrg('foo')
     expect(result).toBe(true)
     expect(fakeOctokit.orgs.createInvitation).toMatchSnapshot()
@@ -120,7 +123,7 @@ describe('github integration', () => {
     jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     jest.spyOn(mod, 'getUserIdFromUsername').mockResolvedValue(123)
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     const result = await mod.addUserToGitHubOrg('foo')
     expect(result).toHaveProperty('error')
     // @ts-expect-error we know it has error
@@ -138,7 +141,7 @@ describe('github integration', () => {
     jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     jest.spyOn(mod, 'getUserIdFromUsername').mockResolvedValue(123)
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     const result = await mod.addUserToGitHubOrg('foo')
     expect(result).toHaveProperty('error')
     // @ts-expect-error we know it has error
@@ -155,7 +158,7 @@ describe('github integration', () => {
     }
     jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     const result = await mod.removeUserFromGitHubOrg('foo')
     expect(result).toBe(true)
     expect(fakeOctokit.orgs.removeMembershipForUser).toMatchSnapshot()
@@ -169,7 +172,7 @@ describe('github integration', () => {
     }
     jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     const result = await mod.removeUserFromGitHubOrg('foo')
     expect(result).toHaveProperty('error')
     // @ts-expect-error we know it has error
@@ -202,7 +205,7 @@ describe('github integration', () => {
     jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     const getUserIdSpy = jest.spyOn(mod, 'getUserIdFromUsername').mockResolvedValue(123)
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     const result = await mod.addUserToGitHubOrg(' foo ')
     expect(result).toBe(true)
     expect(getUserIdSpy).toHaveBeenCalledWith('foo')
@@ -221,7 +224,7 @@ describe('github integration', () => {
     }
     jest.spyOn(config, 'githubOrg', 'get').mockReturnValue('myorg')
     // @ts-expect-error mock service isn't a complete implementation, so being lazy and just doing the bare minimum
-    jest.spyOn(mod, 'getAuthenticatedOctokit').mockReturnValue(fakeOctokit)
+    jest.spyOn(mod, 'getAuthenticatedOctokit').mockResolvedValue(fakeOctokit)
     const result = await mod.removeUserFromGitHubOrg(' foo ')
     expect(result).toBe(true)
     expect(fakeOctokit.orgs.removeMembershipForUser).toHaveBeenCalledWith(expect.objectContaining({ username: 'foo' }))
