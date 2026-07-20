@@ -59,9 +59,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Login to docker.pkg.github.com
+    - name: Login to ghcr.io
       shell: bash
-      run: echo ${PASSWORD} | docker login --username ${USERNAME} --password-stdin docker.pkg.github.com
+      run: echo ${PASSWORD} | docker login --username ${USERNAME} --password-stdin ghcr.io
       env:
         USERNAME: ${{ inputs.github-actor }}
         PASSWORD: ${{ inputs.github-token }}
@@ -82,7 +82,7 @@ runs:
         -e SLACK_NOTIFY_ON_ERROR="$SLACK_NOTIFY_ON_ERROR" \
         -e SLACK_NOTIFY_ON_CHANGE="$SLACK_NOTIFY_ON_CHANGE" \
         -e SLACK_NOTIFY_ALWAYS="$SLACK_NOTIFY_ALWAYS" \
-        docker.pkg.github.com/appvia/githubusermanager/githubusermanager:v1.0.5
+        ghcr.io/appvia/githubusermanager:${{ github.action_ref }}
       shell: bash
       env:
         GOOGLE_EMAIL_ADDRESS: ${{ inputs.google-email-address }}

@@ -37,12 +37,12 @@ jobs:
       - id: docker_meta
         uses: crazy-max/ghaction-docker-meta@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: docker.pkg.github.com/appvia/githubUserManager/githubUserManager
+          images: ghcr.io/appvia/githubusermanager
           flavor: |
             latest=true
           tags: |
             type=sha
-            type=semver,pattern={{version}}
+            type=semver,pattern=v{{version}}
           labels: |
             org.opencontainers.image.vendor=appvia
             org.opencontainers.image.documentation=https://github.com/appvia/githubUserManager
@@ -53,11 +53,11 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         uses: docker/login-action@c99871dec2022cc055c062a10cc1a1310835ceb4 # v4.3.0
         with:
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push to GitHub Packages
+      - name: Push to ghcr.io
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           push: ${{ github.event_name != 'pull_request' }}

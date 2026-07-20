@@ -124,7 +124,7 @@ updates:
 #### Docker
 
 1. Make an [env file](https://www.digitalocean.com/community/tutorials/how-to-read-and-set-environmental-and-shell-variables-on-linux) with the [below table](#Setup-environment-variables)
-1. `docker run --env-file .env docker.pkg.github.com/appvia/githubusermanager/githubusermanager:main`
+1. `docker run --env-file .env ghcr.io/appvia/githubusermanager:latest`
 
 #### node/lambda/cloud run/ something else
 
